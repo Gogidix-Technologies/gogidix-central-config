@@ -1,0 +1,31 @@
+{
+  "service": "environment-config",
+  "defaultLanguage": "en",
+  "supportedLanguages": ["en", "fr", "de", "es", "ar"],
+  "fallbackLanguage": "en",
+  "encoding": "UTF-8",
+  "dateFormat": {
+    "en": "MM/dd/yyyy",
+    "fr": "dd/MM/yyyy",
+    "de": "dd.MM.yyyy",
+    "es": "dd/MM/yyyy",
+    "ar": "yyyy/MM/dd"
+  },
+  "numberFormat": {
+    "en": {"decimal": ".", "thousands": ","},
+    "fr": {"decimal": ",", "thousands": " "},
+    "de": {"decimal": ",", "thousands": "."},
+    "es": {"decimal": ",", "thousands": "."},
+    "ar": {"decimal": "٫", "thousands": "٬"}
+  },
+  "currency": {
+    "en": "USD",
+    "fr": "EUR",
+    "de": "EUR",
+    "es": "EUR",
+    "ar": "USD"
+  },
+  "rtl": {
+    "ar": true
+  }
+}

@@ -1,0 +1,47 @@
+# Test configuration for kubernetes-manifests
+server:
+  port: 0  # Random port for testing
+
+spring:
+  application:
+    name: kubernetes-manifests
+  profiles:
+    active: test
+  
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Kubernetes Manifests Configuration for tests
+kubernetes:
+  manifests:
+    base-path: /tmp/test-manifests
+    validation:
+      enabled: true
+      strict-mode: false
+    deployment:
+      dry-run: true  # Always dry-run in tests
+      enabled: false  # Disable actual deployment
+  clusters:
+    default:
+      enabled: false  # Disable K8s connections in tests
+
+# Logging Configuration
+logging:
+  level:
+    root: WARN
+    com.exalt.centralconfiguration.kubernetesmanifests: DEBUG

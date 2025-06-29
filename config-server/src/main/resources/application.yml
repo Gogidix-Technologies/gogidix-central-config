@@ -1,0 +1,61 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${CONFIG_GIT_URI:https://github.com/social-ecommerce-ecosystem/configuration-repo}
+          default-label: ${CONFIG_GIT_BRANCH:main}
+          search-paths: ${CONFIG_SEARCH_PATHS:/**}
+          username: ${CONFIG_GIT_USERNAME:}
+          password: ${CONFIG_GIT_PASSWORD:}
+          clone-on-start: true
+          force-pull: true
+        encrypt:
+          enabled: true
+  security:
+    user:
+      name: ${CONFIG_SERVER_USERNAME:configuser}
+      password: ${CONFIG_SERVER_PASSWORD:configpass}
+
+# Encryption Key
+encrypt:
+  key: ${ENCRYPT_KEY:ThisIsNotAVerySecureKeyAndShouldBeChangedInProduction}
+  # Alternatively, use a keystore
+  # key-store:
+  #   location: classpath:keystore.jks
+  #   password: ${KEYSTORE_PASSWORD:keystorepass}
+  #   alias: ${KEYSTORE_ALIAS:configkey}
+  #   secret: ${KEY_PASSWORD:keypass}
+
+# Eureka Client Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.uuid}
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,configprops,refresh,bus-refresh,encrypt,decrypt
+  endpoint:
+    health:
+      show-details: always
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.config: DEBUG
+    org.springframework.boot: INFO

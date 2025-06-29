@@ -1,0 +1,44 @@
+# Test configuration for deployment-scripts
+server:
+  port: 0  # Random port for testing
+
+spring:
+  application:
+    name: deployment-scripts
+  profiles:
+    active: test
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Deployment Configuration for tests
+deployment:
+  script:
+    base-path: /tmp/test-scripts
+    validation:
+      enabled: true
+      strict-mode: false
+  environments:
+    - name: test
+      enabled: true
+  dry-run: true  # Always dry-run in tests
+
+# Logging Configuration
+logging:
+  level:
+    root: WARN
+    com.exalt.centralconfiguration.deploymentscripts: DEBUG

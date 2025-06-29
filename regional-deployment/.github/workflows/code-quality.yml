@@ -1,0 +1,87 @@
+name: Code Quality Check - regional-deployment
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  JAVA_VERSION: '17'
+  SERVICE_NAME: regional-deployment
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Run SpotBugs
+      run: mvn spotbugs:check
+      working-directory: central-configuration/regional-deployment
+      
+    - name: Run Checkstyle
+      run: mvn checkstyle:check
+      working-directory: central-configuration/regional-deployment
+      
+    - name: Run PMD
+      run: mvn pmd:check
+      working-directory: central-configuration/regional-deployment
+      
+    - name: Analyze with SonarCloud
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn verify sonar:sonar -Dsonar.projectKey=exalt_regional-deployment
+      working-directory: central-configuration/regional-deployment
+      
+    - name: Check code coverage
+      run: |
+        mvn jacoco:report
+        echo "Code coverage report generated"
+      working-directory: central-configuration/regional-deployment
+      
+    - name: Upload code coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: central-configuration/regional-deployment/target/site/jacoco/jacoco.xml
+        flags: unittests
+        name: codecov-regional-deployment
+        
+    - name: Comment PR with quality metrics
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      with:
+        script: |
+          const fs = require('fs');
+          const coverage = 'Check the build logs for detailed code quality metrics';
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '## Code Quality Report\n' + coverage
+          });

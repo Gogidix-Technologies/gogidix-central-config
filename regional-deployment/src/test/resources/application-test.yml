@@ -1,0 +1,50 @@
+# Test configuration for regional-deployment
+server:
+  port: 0  # Random port for testing
+
+spring:
+  application:
+    name: regional-deployment
+  profiles:
+    active: test
+  
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Regional Deployment Configuration for tests
+regional:
+  deployment:
+    regions:
+      - name: test-region
+        enabled: true
+    strategy:
+      type: blue-green
+      validation:
+        enabled: true
+        strict-mode: false
+    rollback:
+      enabled: true
+      automatic: false
+    monitoring:
+      enabled: false  # Disable monitoring in tests
+
+# Logging Configuration
+logging:
+  level:
+    root: WARN
+    com.exalt.centralconfiguration.regionaldeployment: DEBUG

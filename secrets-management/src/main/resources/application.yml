@@ -1,0 +1,89 @@
+server:
+  port: 8889
+
+spring:
+  application:
+    name: secrets-management
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  
+  # Database Configuration
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/secrets_db}
+    username: ${DATABASE_USERNAME:secrets_user}
+    password: ${DATABASE_PASSWORD:secrets_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+# Eureka Client Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.uuid}
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,configprops
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# Security Configuration
+security:
+  vault:
+    enabled: ${VAULT_ENABLED:false}
+    url: ${VAULT_URL:http://localhost:8200}
+    token: ${VAULT_TOKEN:}
+    backend: secret
+    application-name: ${spring.application.name}
+  encryption:
+    algorithm: AES
+    key-size: 256
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.exalt.centralconfiguration.secretsmanagement: DEBUG
+    org.springframework.security: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/secrets-management.log
+    max-size: 10MB
+    max-history: 30

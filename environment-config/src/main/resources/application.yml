@@ -1,0 +1,89 @@
+server:
+  port: 8890
+
+spring:
+  application:
+    name: environment-config
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  
+  # Database Configuration
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/env_config_db}
+    username: ${DATABASE_USERNAME:env_user}
+    password: ${DATABASE_PASSWORD:env_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+# Eureka Client Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.uuid}
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,configprops
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# Environment Configuration Settings
+environment:
+  config:
+    refresh-interval: ${ENV_REFRESH_INTERVAL:300}
+    cache-enabled: ${ENV_CACHE_ENABLED:true}
+    cache-ttl: ${ENV_CACHE_TTL:3600}
+  supported-environments:
+    - development
+    - staging
+    - production
+    - test
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.exalt.centralconfiguration.environmentconfig: DEBUG
+    org.springframework.cloud: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/environment-config.log
+    max-size: 10MB
+    max-history: 30

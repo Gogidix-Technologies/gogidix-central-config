@@ -1,0 +1,835 @@
+openapi: 3.0.3
+info:
+  title: CI/CD Templates API
+  description: |
+    Enterprise CI/CD Templates service API for the Social E-commerce Ecosystem.
+    
+    This API provides comprehensive template management, workflow generation, and pipeline orchestration capabilities for standardized CI/CD processes across all microservices.
+    
+    ## Features
+    - Template lifecycle management
+    - Automated workflow generation
+    - Service integration and configuration
+    - Analytics and performance monitoring
+    - Compliance validation and reporting
+    
+    ## Authentication
+    All endpoints require authentication using JWT tokens or API keys.
+    
+    ## Rate Limiting
+    - Standard endpoints: 60 requests/minute
+    - Resource-intensive endpoints: 10 requests/minute
+    - Pipeline triggers: 5 requests/minute
+    
+  version: 1.0.0
+  contact:
+    name: Platform Team
+    email: platform-team@exalt-platform.com
+    url: https://docs.exalt-platform.com
+  license:
+    name: Proprietary
+    url: https://exalt-platform.com/license
+
+servers:
+  - url: https://cicd-api.exalt-platform.com/v1
+    description: Production API
+  - url: https://cicd-api-staging.exalt-platform.com/v1
+    description: Staging API
+  - url: https://cicd-api-dev.exalt-platform.com/v1
+    description: Development API
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: Returns the health status of the CI/CD Templates service
+      operationId: getHealth
+      tags:
+        - Health
+      security: []
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /templates:
+    get:
+      summary: List Templates
+      description: Retrieves a paginated list of available CI/CD templates
+      operationId: listTemplates
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/CategoryParam'
+        - $ref: '#/components/parameters/TechnologyParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: List of templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateListResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+    post:
+      summary: Create Template
+      description: Creates a new CI/CD template
+      operationId: createTemplate
+      tags:
+        - Templates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateRequest'
+      responses:
+        '201':
+          description: Template created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '400':
+          description: Invalid template data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '409':
+          description: Template already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /templates/{templateId}:
+    get:
+      summary: Get Template
+      description: Retrieves detailed information about a specific template
+      operationId: getTemplate
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/TemplateIdParam'
+      responses:
+        '200':
+          description: Template details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '404':
+          description: Template not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+    put:
+      summary: Update Template
+      description: Updates an existing CI/CD template
+      operationId: updateTemplate
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/TemplateIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTemplateRequest'
+      responses:
+        '200':
+          description: Template updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '400':
+          description: Invalid template data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Template not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+    delete:
+      summary: Delete Template
+      description: Deletes a CI/CD template
+      operationId: deleteTemplate
+      tags:
+        - Templates
+      parameters:
+        - $ref: '#/components/parameters/TemplateIdParam'
+      responses:
+        '200':
+          description: Template deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        '404':
+          description: Template not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /workflows/generate:
+    post:
+      summary: Generate Workflow
+      description: Generates a complete workflow from template compositions
+      operationId: generateWorkflow
+      tags:
+        - Workflows
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateWorkflowRequest'
+      responses:
+        '200':
+          description: Workflow generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratedWorkflow'
+        '400':
+          description: Invalid workflow configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /services:
+    get:
+      summary: List Services
+      description: Retrieves a list of registered services
+      operationId: listServices
+      tags:
+        - Services
+      parameters:
+        - $ref: '#/components/parameters/DomainParam'
+        - $ref: '#/components/parameters/ServiceTypeParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: List of services
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceListResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+    post:
+      summary: Register Service
+      description: Registers a new service for CI/CD template integration
+      operationId: registerService
+      tags:
+        - Services
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterServiceRequest'
+      responses:
+        '201':
+          description: Service registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        '400':
+          description: Invalid service data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  parameters:
+    TemplateIdParam:
+      name: templateId
+      in: path
+      required: true
+      description: Template identifier
+      schema:
+        type: string
+        example: java-maven-build
+
+    CategoryParam:
+      name: category
+      in: query
+      description: Filter templates by category
+      schema:
+        type: string
+        enum: [build, test, security, quality, deploy, verify]
+        example: build
+
+    TechnologyParam:
+      name: technology
+      in: query
+      description: Filter templates by technology
+      schema:
+        type: string
+        example: java
+
+    DomainParam:
+      name: domain
+      in: query
+      description: Filter by service domain
+      schema:
+        type: string
+        enum: [social-commerce, warehousing, courier-services, centralized-dashboard]
+        example: social-commerce
+
+    ServiceTypeParam:
+      name: serviceType
+      in: query
+      description: Filter by service type
+      schema:
+        type: string
+        example: java
+
+    PageParam:
+      name: page
+      in: query
+      description: Page number for pagination
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+
+    LimitParam:
+      name: limit
+      in: query
+      description: Number of items per page
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+        example: 20
+
+  responses:
+    UnauthorizedError:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - version
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          example: healthy
+        version:
+          type: string
+          example: "1.0.0"
+        uptime:
+          type: string
+          example: "15d 6h 42m"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:30:00Z"
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/HealthComponent'
+
+    HealthComponent:
+      type: object
+      required:
+        - name
+        - status
+      properties:
+        name:
+          type: string
+          example: database
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+          example: healthy
+        lastCheck:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:30:00Z"
+
+    Template:
+      type: object
+      required:
+        - id
+        - name
+        - category
+        - technology
+        - content
+        - version
+      properties:
+        id:
+          type: string
+          example: java-maven-build
+        name:
+          type: string
+          example: Java Maven Build
+        category:
+          type: string
+          enum: [build, test, security, quality, deploy, verify]
+          example: build
+        technology:
+          type: string
+          example: java
+        description:
+          type: string
+          example: Standard build template for Java Maven projects
+        content:
+          type: string
+          description: YAML template content
+        version:
+          type: string
+          example: "1.2.3"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:30:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:30:00Z"
+        createdBy:
+          type: string
+          example: devops-team
+        inputs:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/TemplateInput'
+        outputs:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/TemplateOutput'
+        usageCount:
+          type: integer
+          example: 24
+        successRate:
+          type: number
+          format: float
+          example: 92.5
+
+    TemplateInput:
+      type: object
+      required:
+        - type
+        - required
+      properties:
+        description:
+          type: string
+          example: Java version to use for the build
+        type:
+          type: string
+          enum: [string, number, boolean]
+          example: string
+        required:
+          type: boolean
+          example: false
+        default:
+          oneOf:
+            - type: string
+            - type: number
+            - type: boolean
+          example: "17"
+
+    TemplateOutput:
+      type: object
+      required:
+        - type
+      properties:
+        description:
+          type: string
+          example: Status of the build
+        type:
+          type: string
+          enum: [string, number, boolean]
+          example: string
+
+    TemplateListResponse:
+      type: object
+      required:
+        - total
+        - page
+        - limit
+        - templates
+      properties:
+        total:
+          type: integer
+          example: 5
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 20
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+
+    CreateTemplateRequest:
+      type: object
+      required:
+        - id
+        - name
+        - category
+        - technology
+        - content
+      properties:
+        id:
+          type: string
+          example: custom-java-build
+        name:
+          type: string
+          example: Custom Java Build
+        category:
+          type: string
+          enum: [build, test, security, quality, deploy, verify]
+          example: build
+        technology:
+          type: string
+          example: java
+        description:
+          type: string
+          example: Customized build template for Java projects
+        content:
+          type: string
+          description: YAML template content
+
+    UpdateTemplateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Custom Java Build
+        description:
+          type: string
+          example: Updated customized build template for Java projects
+        content:
+          type: string
+          description: YAML template content
+
+    GenerateWorkflowRequest:
+      type: object
+      required:
+        - serviceName
+        - serviceType
+        - domain
+        - templates
+      properties:
+        serviceName:
+          type: string
+          example: product-service
+        serviceType:
+          type: string
+          example: java
+        domain:
+          type: string
+          enum: [social-commerce, warehousing, courier-services, centralized-dashboard]
+          example: social-commerce
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateUsage'
+        environments:
+          type: array
+          items:
+            type: string
+          example: [development, production]
+        branchRules:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            main: [production]
+            develop: [development]
+
+    TemplateUsage:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          example: java-maven-build
+        inputs:
+          type: object
+          additionalProperties:
+            oneOf:
+              - type: string
+              - type: number
+              - type: boolean
+          example:
+            java-version: "17"
+            maven-args: "-B -DskipTests"
+
+    GeneratedWorkflow:
+      type: object
+      required:
+        - serviceName
+        - workflowFile
+        - content
+        - generatedAt
+      properties:
+        serviceName:
+          type: string
+          example: product-service
+        workflowFile:
+          type: string
+          example: product-service-pipeline.yml
+        content:
+          type: string
+          description: Generated YAML workflow content
+        generatedAt:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:30:00Z"
+
+    Service:
+      type: object
+      required:
+        - id
+        - name
+        - repository
+        - serviceType
+        - domain
+      properties:
+        id:
+          type: string
+          example: inventory-service
+        name:
+          type: string
+          example: Inventory Service
+        repository:
+          type: string
+          example: exalt-social-ecommerce-ecosystem/inventory-service
+        serviceType:
+          type: string
+          example: java
+        domain:
+          type: string
+          enum: [social-commerce, warehousing, courier-services, centralized-dashboard]
+          example: warehousing
+        description:
+          type: string
+          example: Service for managing inventory
+        contacts:
+          type: array
+          items:
+            type: string
+          example: [warehousing-team@exalt-platform.com]
+        environments:
+          type: array
+          items:
+            type: string
+          example: [development, testing, staging, production]
+        registeredAt:
+          type: string
+          format: date-time
+          example: "2023-12-01T10:30:00Z"
+        status:
+          type: string
+          enum: [active, inactive, suspended]
+          example: active
+        integrationStatus:
+          type: string
+          enum: [pending, active, failed]
+          example: active
+
+    ServiceListResponse:
+      type: object
+      required:
+        - total
+        - page
+        - limit
+        - services
+      properties:
+        total:
+          type: integer
+          example: 15
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 20
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+
+    RegisterServiceRequest:
+      type: object
+      required:
+        - name
+        - repository
+        - serviceType
+        - domain
+      properties:
+        name:
+          type: string
+          example: inventory-service
+        repository:
+          type: string
+          example: exalt-social-ecommerce-ecosystem/inventory-service
+        serviceType:
+          type: string
+          example: java
+        domain:
+          type: string
+          enum: [social-commerce, warehousing, courier-services, centralized-dashboard]
+          example: warehousing
+        description:
+          type: string
+          example: Service for managing inventory
+        contacts:
+          type: array
+          items:
+            type: string
+          example: [warehousing-team@exalt-platform.com]
+        environments:
+          type: array
+          items:
+            type: string
+          example: [development, testing, staging, production]
+
+    DeleteResponse:
+      type: object
+      required:
+        - id
+        - status
+        - message
+      properties:
+        id:
+          type: string
+          example: custom-java-build
+        status:
+          type: string
+          example: deleted
+        message:
+          type: string
+          example: Template successfully deleted
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+            - timestamp
+          properties:
+            code:
+              type: string
+              example: INVALID_TEMPLATE
+            message:
+              type: string
+              example: The template contains invalid YAML syntax
+            details:
+              type: object
+              properties:
+                line:
+                  type: integer
+                  example: 15
+                column:
+                  type: integer
+                  example: 3
+                reason:
+                  type: string
+                  example: mapping values are not allowed in this context
+            requestId:
+              type: string
+              example: req-12345abcde
+            timestamp:
+              type: string
+              format: date-time
+              example: "2023-12-01T10:30:00Z"
+
+tags:
+  - name: Health
+    description: Service health and status endpoints
+  - name: Templates
+    description: CI/CD template management
+  - name: Workflows
+    description: Workflow generation and customization
+  - name: Services
+    description: Service registration and integration
+  - name: Analytics
+    description: Usage analytics and performance metrics
+  - name: Pipelines
+    description: Pipeline management and monitoring

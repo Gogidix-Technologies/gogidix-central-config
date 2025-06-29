@@ -1,0 +1,103 @@
+server:
+  port: 8896
+
+spring:
+  application:
+    name: kubernetes-manifests
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  
+  # Database Configuration
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/k8s_manifests_db}
+    username: ${DATABASE_USERNAME:k8s_user}
+    password: ${DATABASE_PASSWORD:k8s_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+# Eureka Client Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.uuid}
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,configprops
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# Kubernetes Configuration
+kubernetes:
+  manifests:
+    repository: ${K8S_MANIFESTS_REPO:/manifests}
+    namespaces:
+      - default
+      - development
+      - staging
+      - production
+    validation:
+      enabled: ${K8S_VALIDATION_ENABLED:true}
+      strict: ${K8S_VALIDATION_STRICT:false}
+      dry-run: ${K8S_DRY_RUN:true}
+    templating:
+      engine: ${K8S_TEMPLATE_ENGINE:helm}
+      values-directory: ${K8S_VALUES_DIR:/values}
+    deployment:
+      strategy: ${K8S_DEPLOY_STRATEGY:rolling}
+      max-surge: ${K8S_MAX_SURGE:1}
+      max-unavailable: ${K8S_MAX_UNAVAILABLE:0}
+    resources:
+      cpu-request: ${K8S_CPU_REQUEST:100m}
+      cpu-limit: ${K8S_CPU_LIMIT:500m}
+      memory-request: ${K8S_MEMORY_REQUEST:128Mi}
+      memory-limit: ${K8S_MEMORY_LIMIT:512Mi}
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.exalt.centralconfiguration.kubernetesmanifests: DEBUG
+    org.springframework.cloud: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/kubernetes-manifests.log
+    max-size: 10MB
+    max-history: 30

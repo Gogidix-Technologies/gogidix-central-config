@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server
+  labels:
+    app: config-server
+    tier: infrastructure
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: config-server
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+        - name: config-server
+          image: ${DOCKER_REGISTRY:-socialecommerceecosystem}/config-server:${IMAGE_TAG:-latest}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8888
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: ${ENVIRONMENT:-prod}
+            - name: CONFIG_GIT_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: config-server-config
+                  key: config.git.uri
+            - name: CONFIG_GIT_BRANCH
+              valueFrom:
+                configMapKeyRef:
+                  name: config-server-config
+                  key: config.git.branch
+            - name: CONFIG_GIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: config-server-secrets
+                  key: git.username
+                  optional: true
+            - name: CONFIG_GIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: config-server-secrets
+                  key: git.password
+                  optional: true
+            - name: CONFIG_SERVER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: config-server-secrets
+                  key: server.username
+            - name: CONFIG_SERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: config-server-secrets
+                  key: server.password
+            - name: ENCRYPT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: config-server-secrets
+                  key: encrypt.key
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://service-registry:8761/eureka/
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8888
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8888
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-server
+  labels:
+    app: config-server
+spec:
+  selector:
+    app: config-server
+  ports:
+    - port: 8888
+      targetPort: 8888
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-server-config
+data:
+  config.git.uri: "https://github.com/social-ecommerce-ecosystem/configuration-repo"
+  config.git.branch: "main"
+---
+# Create this Secret separately using kubectl or a secure vault solution in production
+# The YAML below is for reference only
+# kubectl create secret generic config-server-secrets \
+#   --from-literal=server.username=your-username \
+#   --from-literal=server.password=your-secure-password \
+#   --from-literal=git.username=your-git-username \
+#   --from-literal=git.password=your-git-password \
+#   --from-literal=encrypt.key=your-secure-encryption-key

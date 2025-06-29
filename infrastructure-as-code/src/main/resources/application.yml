@@ -1,0 +1,96 @@
+server:
+  port: 8893
+
+spring:
+  application:
+    name: infrastructure-as-code
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  
+  # Database Configuration
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/iac_db}
+    username: ${DATABASE_USERNAME:iac_user}
+    password: ${DATABASE_PASSWORD:iac_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+# Eureka Client Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.uuid}
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,configprops
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# Infrastructure as Code Configuration
+iac:
+  config:
+    providers:
+      - name: terraform
+        enabled: ${TERRAFORM_ENABLED:true}
+        version: ${TERRAFORM_VERSION:1.5.0}
+        workspace: ${TERRAFORM_WORKSPACE:default}
+      - name: ansible
+        enabled: ${ANSIBLE_ENABLED:false}
+        version: ${ANSIBLE_VERSION:2.15.0}
+      - name: cloudformation
+        enabled: ${CLOUDFORMATION_ENABLED:false}
+    template-directory: ${IAC_TEMPLATE_DIR:/templates}
+    state-backend: ${IAC_STATE_BACKEND:s3}
+    state-bucket: ${IAC_STATE_BUCKET:}
+    validation-enabled: ${IAC_VALIDATION_ENABLED:true}
+    dry-run-default: ${IAC_DRY_RUN_DEFAULT:true}
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.exalt.centralconfiguration.infrastructureascode: DEBUG
+    org.springframework.cloud: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/infrastructure-as-code.log
+    max-size: 10MB
+    max-history: 30

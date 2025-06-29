@@ -1,0 +1,171 @@
+name: Test disaster-recovery Service
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  JAVA_VERSION: '17'
+  MAVEN_VERSION: '3.8.6'
+  SERVICE_NAME: disaster-recovery
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Run unit tests
+      run: mvn test -Dtest="**/unit/**"
+      working-directory: central-configuration/disaster-recovery
+      
+    - name: Generate test report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Unit Test Results
+        path: central-configuration/disaster-recovery/target/surefire-reports/*.xml
+        reporter: java-junit
+        
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        
+    - name: Start dependencies
+      run: docker-compose up -d
+      working-directory: central-configuration/disaster-recovery
+      
+    - name: Run integration tests
+      run: mvn test -Dtest="**/integration/**"
+      working-directory: central-configuration/disaster-recovery
+      
+    - name: Generate test report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Integration Test Results
+        path: central-configuration/disaster-recovery/target/surefire-reports/*.xml
+        reporter: java-junit
+        
+    - name: Stop dependencies
+      if: always()
+      run: docker-compose down
+      working-directory: central-configuration/disaster-recovery
+      
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: integration-tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        
+    - name: Build application
+      run: mvn package -DskipTests
+      working-directory: central-configuration/disaster-recovery
+      
+    - name: Start application
+      run: |
+        docker-compose up -d
+        sleep 30
+      working-directory: central-configuration/disaster-recovery
+      
+    - name: Run E2E tests
+      run: mvn test -Dtest="**/e2e/**"
+      working-directory: central-configuration/disaster-recovery
+      
+    - name: Generate test report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: E2E Test Results
+        path: central-configuration/disaster-recovery/target/surefire-reports/*.xml
+        reporter: java-junit
+        
+    - name: Stop application
+      if: always()
+      run: docker-compose down
+      working-directory: central-configuration/disaster-recovery
+      
+  performance-tests:
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install k6
+      run: |
+        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+        echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+        sudo apt-get update
+        sudo apt-get install k6
+        
+    - name: Build and start application
+      run: |
+        mvn package -DskipTests
+        docker-compose up -d
+        sleep 30
+      working-directory: central-configuration/disaster-recovery
+      
+    - name: Run performance tests
+      run: k6 run tests/performance/*.js
+      working-directory: central-configuration/disaster-recovery
+      
+    - name: Upload performance results
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-results
+        path: central-configuration/disaster-recovery/performance-results/
+        retention-days: 30
+        
+    - name: Stop application
+      if: always()
+      run: docker-compose down
+      working-directory: central-configuration/disaster-recovery

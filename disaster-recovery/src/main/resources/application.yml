@@ -1,0 +1,111 @@
+server:
+  port: 8897
+
+spring:
+  application:
+    name: disaster-recovery
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  
+  # Database Configuration
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/disaster_recovery_db}
+    username: ${DATABASE_USERNAME:dr_user}
+    password: ${DATABASE_PASSWORD:dr_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+# Eureka Client Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.uuid}
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,configprops
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# Disaster Recovery Configuration
+disaster-recovery:
+  backup:
+    enabled: ${BACKUP_ENABLED:true}
+    schedule: ${BACKUP_SCHEDULE:0 0 2 * * ?}
+    retention-days: ${BACKUP_RETENTION_DAYS:30}
+    storage:
+      type: ${BACKUP_STORAGE_TYPE:s3}
+      bucket: ${BACKUP_BUCKET:}
+      region: ${BACKUP_REGION:us-east-1}
+    databases:
+      enabled: ${BACKUP_DATABASES:true}
+    files:
+      enabled: ${BACKUP_FILES:true}
+      paths:
+        - /data
+        - /config
+  recovery:
+    rpo: ${RECOVERY_RPO:4}
+    rto: ${RECOVERY_RTO:1}
+    test-schedule: ${RECOVERY_TEST_SCHEDULE:0 0 3 ? * SUN}
+    automated: ${RECOVERY_AUTOMATED:false}
+  monitoring:
+    health-check-interval: ${HEALTH_CHECK_INTERVAL:60}
+    alert-channels:
+      - email
+      - slack
+      - pagerduty
+  failover:
+    enabled: ${FAILOVER_ENABLED:true}
+    automatic: ${FAILOVER_AUTOMATIC:false}
+    primary-region: ${PRIMARY_REGION:us-east-1}
+    secondary-region: ${SECONDARY_REGION:eu-west-1}
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.exalt.centralconfiguration.disasterrecovery: DEBUG
+    org.springframework.cloud: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/disaster-recovery.log
+    max-size: 10MB
+    max-history: 30

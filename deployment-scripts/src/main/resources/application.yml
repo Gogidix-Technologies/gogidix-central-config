@@ -1,0 +1,99 @@
+server:
+  port: 8895
+
+spring:
+  application:
+    name: deployment-scripts
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  
+  # Database Configuration
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/deploy_scripts_db}
+    username: ${DATABASE_USERNAME:deploy_user}
+    password: ${DATABASE_PASSWORD:deploy_pass}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+# Eureka Client Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${random.uuid}
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,configprops
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# Deployment Scripts Configuration
+deployment:
+  scripts:
+    repository: ${SCRIPTS_REPOSITORY:/scripts}
+    environments:
+      - development
+      - staging
+      - production
+    execution:
+      timeout: ${SCRIPT_TIMEOUT:600}
+      max-retries: ${SCRIPT_MAX_RETRIES:3}
+      retry-delay: ${SCRIPT_RETRY_DELAY:30}
+    validation:
+      enabled: ${SCRIPT_VALIDATION_ENABLED:true}
+      syntax-check: ${SCRIPT_SYNTAX_CHECK:true}
+    notifications:
+      enabled: ${NOTIFICATIONS_ENABLED:true}
+      channels:
+        - email
+        - slack
+        - webhook
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.exalt.centralconfiguration.deploymentscripts: DEBUG
+    org.springframework.cloud: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/deployment-scripts.log
+    max-size: 10MB
+    max-history: 30

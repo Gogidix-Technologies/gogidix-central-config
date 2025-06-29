@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  environment-config:
+    build: .
+    container_name: environment-config
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka:8761/eureka/
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=environment_config
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - redis
+      - eureka
+    networks:
+      - central-configuration-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: environment-config-postgres
+    environment:
+      POSTGRES_DB: environment_config
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - central-configuration-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: environment-config-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - central-configuration-network
+
+  eureka:
+    image: springcloud/eureka:latest
+    container_name: environment-config-eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - central-configuration-network
+
+volumes:
+  postgres_data:
+
+networks:
+  central-configuration-network:
+    driver: bridge

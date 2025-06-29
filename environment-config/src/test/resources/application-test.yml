@@ -1,0 +1,45 @@
+# Test configuration for environment-config
+server:
+  port: 0  # Random port for testing
+
+spring:
+  application:
+    name: environment-config
+  profiles:
+    active: test
+  
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Environment Configuration for tests
+environment:
+  config:
+    environments:
+      - name: test
+        enabled: true
+    validation:
+      enabled: true
+      strict-mode: false
+    synchronization:
+      enabled: false  # Disable sync in tests
+
+# Logging Configuration
+logging:
+  level:
+    root: WARN
+    com.exalt.centralconfiguration.environmentconfig: DEBUG

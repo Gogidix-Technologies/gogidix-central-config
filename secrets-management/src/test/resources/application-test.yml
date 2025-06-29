@@ -1,0 +1,47 @@
+# Test configuration for secrets-management
+server:
+  port: 0  # Random port for testing
+
+spring:
+  application:
+    name: secrets-management
+  profiles:
+    active: test
+  
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Security Configuration for tests
+security:
+  vault:
+    enabled: false  # Disable Vault in tests
+  encryption:
+    algorithm: AES
+    key-size: 256
+    test-key: TestEncryptionKeyForUnitTests
+
+# Disable security for tests
+spring.security:
+  enabled: false
+
+# Logging Configuration
+logging:
+  level:
+    root: WARN
+    com.exalt.centralconfiguration.secretsmanagement: DEBUG
+    org.springframework.security: INFO

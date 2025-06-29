@@ -1,0 +1,53 @@
+# Test configuration for config-server
+server:
+  port: 0  # Random port for testing
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:config/
+        git:
+          uri: file:///tmp/config-repo  # Use local file system for tests
+          default-label: main
+          search-paths: /**
+          clone-on-start: false  # Disable for tests
+        encrypt:
+          enabled: false  # Disable encryption for tests
+  profiles:
+    active: test,native  # Use native profile for tests
+  security:
+    user:
+      name: testuser
+      password: testpass
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# Encryption Key for tests
+encrypt:
+  key: TestKeyForUnitTests
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Logging Configuration
+logging:
+  level:
+    root: WARN
+    com.exalt.centralconfiguration.configserver: DEBUG
+    org.springframework.cloud.config: DEBUG

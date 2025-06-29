@@ -1,0 +1,51 @@
+# Test configuration for infrastructure-as-code
+server:
+  port: 0  # Random port for testing
+
+spring:
+  application:
+    name: infrastructure-as-code
+  profiles:
+    active: test
+  
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Infrastructure as Code Configuration for tests
+infrastructure:
+  template:
+    base-path: /tmp/test-templates
+    validation:
+      enabled: true
+      strict-mode: false
+  provisioning:
+    dry-run: true  # Always dry-run in tests
+    enabled: false  # Disable actual provisioning
+  cloud-providers:
+    aws:
+      enabled: false
+    azure:
+      enabled: false
+    gcp:
+      enabled: false
+
+# Logging Configuration
+logging:
+  level:
+    root: WARN
+    com.exalt.centralconfiguration.infrastructureascode: DEBUG

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-manifests-external
+  namespace: central-configuration
+  labels:
+    app: kubernetes-manifests
+    component: central-config
+    type: external
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8186
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: kubernetes-manifests

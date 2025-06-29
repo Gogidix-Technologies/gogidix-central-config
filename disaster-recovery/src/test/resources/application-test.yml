@@ -1,0 +1,45 @@
+# Test configuration for disaster-recovery
+server:
+  port: 0  # Random port for testing
+
+spring:
+  application:
+    name: disaster-recovery
+  profiles:
+    active: test
+
+# Disable Eureka for tests
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Disaster Recovery Configuration for tests
+disaster-recovery:
+  backup:
+    enabled: false  # Disable actual backups in tests
+    base-path: /tmp/test-backups
+  recovery:
+    dry-run: true  # Always dry-run in tests
+    validation:
+      enabled: true
+      strict-mode: false
+  notification:
+    enabled: false  # Disable notifications in tests
+
+# Logging Configuration
+logging:
+  level:
+    root: WARN
+    com.exalt.centralconfiguration.disasterrecovery: DEBUG
