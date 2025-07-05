@@ -28,10 +28,10 @@ kubectl apply -f base/shared-infrastructure/api-gateway/
 kubectl apply -k overlays/production/ --record
 
 # Check rollout status
-kubectl rollout status deployment/example-service -n exalt-production
+kubectl rollout status deployment/example-service -n gogidix-production
 
 # Rollback if necessary
-kubectl rollout undo deployment/example-service -n exalt-production
+kubectl rollout undo deployment/example-service -n gogidix-production
 ```
 
 #### Version Control
@@ -49,10 +49,10 @@ All manifest changes should follow GitOps principles:
 kubectl get namespaces
 
 # View resources in an environment
-kubectl get all -n exalt-production
+kubectl get all -n gogidix-production
 
 # Check resource utilization
-kubectl top pods -n exalt-production
+kubectl top pods -n gogidix-production
 kubectl top nodes
 ```
 
@@ -125,12 +125,12 @@ kubectl top nodes
 
 1. Check pod status:
    ```bash
-   kubectl describe pod <pod-name> -n exalt-production
+   kubectl describe pod <pod-name> -n gogidix-production
    ```
 
 2. View container logs:
    ```bash
-   kubectl logs <pod-name> -n exalt-production
+   kubectl logs <pod-name> -n gogidix-production
    ```
 
 3. Common causes:
@@ -143,17 +143,17 @@ kubectl top nodes
 
 1. Verify service discovery:
    ```bash
-   kubectl get services -n exalt-production
+   kubectl get services -n gogidix-production
    ```
 
 2. Test connectivity:
    ```bash
-   kubectl exec -it <pod-name> -n exalt-production -- curl <service-name>
+   kubectl exec -it <pod-name> -n gogidix-production -- curl <service-name>
    ```
 
 3. Check network policies:
    ```bash
-   kubectl get networkpolicies -n exalt-production
+   kubectl get networkpolicies -n gogidix-production
    ```
 
 ## Disaster Recovery
@@ -167,7 +167,7 @@ kubectl top nodes
 
 2. Export critical resources:
    ```bash
-   kubectl get all -n exalt-production -o yaml > production-backup.yaml
+   kubectl get all -n gogidix-production -o yaml > production-backup.yaml
    ```
 
 ### Recovery Procedures
@@ -184,7 +184,7 @@ kubectl top nodes
 
 3. Verify recovery:
    ```bash
-   kubectl get pods,services,deployments -n exalt-production
+   kubectl get pods,services,deployments -n gogidix-production
    ```
 
 ## Best Practices

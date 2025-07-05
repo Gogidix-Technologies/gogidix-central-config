@@ -49,7 +49,7 @@ jq 1.6+ (for JSON processing)
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/exalt-social-ecommerce-ecosystem/central-configuration.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/central-configuration.git
 cd central-configuration/environment-config
 ```
 
@@ -69,7 +69,7 @@ CONFIG_SERVICE_PORT=8540
 SPRING_PROFILES_ACTIVE=dev
 
 # Git Configuration
-CONFIG_GIT_URI=https://github.com/exalt-social-ecommerce-ecosystem/config-repo.git
+CONFIG_GIT_URI=https://github.com/gogidix-social-ecommerce-ecosystem/config-repo.git
 CONFIG_GIT_USERNAME=your-username
 CONFIG_GIT_PASSWORD=your-token
 
@@ -136,7 +136,7 @@ debug: true
 logging:
   level:
     root: DEBUG
-    com.exalt: DEBUG
+    com.gogidix: DEBUG
 
 # application-prod.yml
 management:

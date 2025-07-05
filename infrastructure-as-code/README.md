@@ -7,7 +7,7 @@
 
 ## 📋 Overview
 
-The Infrastructure as Code (IaC) Service is a comprehensive infrastructure management platform that enables automated provisioning, configuration, and management of cloud infrastructure using declarative code templates. It supports multiple cloud providers and IaC tools, providing a unified interface for infrastructure lifecycle management across the Exalt E-commerce Ecosystem.
+The Infrastructure as Code (IaC) Service is a comprehensive infrastructure management platform that enables automated provisioning, configuration, and management of cloud infrastructure using declarative code templates. It supports multiple cloud providers and IaC tools, providing a unified interface for infrastructure lifecycle management across the Gogidix E-commerce Ecosystem.
 
 ## 🎯 Purpose
 
@@ -108,7 +108,7 @@ graph TB
 infrastructure-as-code/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/exalt/centralconfiguration/infrastructureascode/
+│   │   ├── java/com/gogidix/centralconfiguration/infrastructureascode/
 │   │   │   ├── InfrastructureAsCodeApplication.java    # Main application class
 │   │   │   ├── controller/
 │   │   │   │   ├── TemplateController.java             # Template management API
@@ -165,7 +165,7 @@ infrastructure-as-code/
 │   │           ├── arm/                                # ARM templates
 │   │           └── helm/                               # Helm charts
 │   └── test/
-│       └── java/com/exalt/centralconfiguration/infrastructureascode/
+│       └── java/com/gogidix/centralconfiguration/infrastructureascode/
 │           ├── InfrastructureAsCodeApplicationTest.java
 │           ├── service/
 │           │   ├── TemplateServiceTest.java
@@ -175,14 +175,14 @@ infrastructure-as-code/
 │               └── IaCIntegrationTest.java
 ├── tests/
 │   ├── unit/
-│   │   └── com/exalt/centralconfiguration/infrastructureascode/
+│   │   └── com/gogidix/centralconfiguration/infrastructureascode/
 │   │       └── validation/
 │   │           └── TemplateValidatorTest.java
 │   ├── integration/
-│   │   └── com/exalt/centralconfiguration/infrastructureascode/
+│   │   └── com/gogidix/centralconfiguration/infrastructureascode/
 │   │       └── TemplateProcessorIntegrationTest.java
 │   ├── e2e/
-│   │   └── com/exalt/centralconfiguration/infrastructureascode/
+│   │   └── com/gogidix/centralconfiguration/infrastructureascode/
 │   │       └── InfrastructureAsCodeE2ETest.java
 │   └── performance/
 │       └── InfrastructureAsCodeLoadTest.js
@@ -1168,7 +1168,7 @@ spec:
       serviceAccountName: iac-service-account
       containers:
       - name: iac-service
-        image: exalt/infrastructure-as-code:1.0.0
+        image: gogidix/infrastructure-as-code:1.0.0
         ports:
         - containerPort: 8095
         env:
@@ -1246,13 +1246,13 @@ spec:
 
 For questions, issues, or contributions:
 
-- **Documentation**: [Internal Wiki](https://wiki.exalt.com/infrastructure-as-code)
-- **Issues**: [JIRA Project](https://jira.exalt.com/projects/IAC)
-- **Support**: [Slack #central-configuration](https://exalt.slack.com/channels/central-configuration)
-- **Email**: central-configuration@exalt.com
+- **Documentation**: [Internal Wiki](https://wiki.gogidix.com/infrastructure-as-code)
+- **Issues**: [JIRA Project](https://jira.gogidix.com/projects/IAC)
+- **Support**: [Slack #central-configuration](https://gogidix.slack.com/channels/central-configuration)
+- **Email**: central-configuration@gogidix.com
 
 ---
 
-**License**: Internal Use - Exalt Application Limited  
+**License**: Internal Use - Gogidix Application Limited  
 **Maintainer**: Platform Infrastructure Team  
 **Last Updated**: June 16, 2025

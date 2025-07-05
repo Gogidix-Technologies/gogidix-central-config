@@ -3,4 +3,4 @@
 Domain repository for Clean Social E-commerce Ecosystem.
 
 ## Repository
-https://github.com/Exalt-Application-Limited/central-configuration
+https://github.com/Gogidix-Application-Limited/central-configuration

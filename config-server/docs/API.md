@@ -15,7 +15,7 @@ The Configuration Server exposes RESTful endpoints for:
 ## Base URL
 
 ```
-https://config-server.exalt-ecommerce.com
+https://config-server.gogidix-ecommerce.com
 ```
 
 ## Authentication
@@ -51,7 +51,7 @@ Retrieves configuration properties for an application in a specific environment.
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/product-service/prod \
+  https://config-server.gogidix-ecommerce.com/product-service/prod \
   -H 'Authorization: Bearer {token}' \
   -H 'Accept: application/json'
 ```
@@ -66,16 +66,16 @@ curl -X GET \
   "state": null,
   "propertySources": [
     {
-      "name": "https://github.com/exalt-social-ecommerce-ecosystem/configuration-repository/service-domains/social-commerce/product-service-prod.yml",
+      "name": "https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repository/service-domains/social-commerce/product-service-prod.yml",
       "source": {
         "server.port": 8080,
-        "spring.datasource.url": "jdbc:postgresql://db.exalt-ecommerce.com:5432/product_db",
+        "spring.datasource.url": "jdbc:postgresql://db.gogidix-ecommerce.com:5432/product_db",
         "spring.datasource.username": "product_service",
         "spring.datasource.password": "{cipher}AQAn6k0hWxPy7CJ+..."
       }
     },
     {
-      "name": "https://github.com/exalt-social-ecommerce-ecosystem/configuration-repository/service-domains/social-commerce/product-service.yml",
+      "name": "https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repository/service-domains/social-commerce/product-service.yml",
       "source": {
         "server.tomcat.threads.max": 200,
         "server.tomcat.threads.min-spare": 20,
@@ -83,7 +83,7 @@ curl -X GET \
       }
     },
     {
-      "name": "https://github.com/exalt-social-ecommerce-ecosystem/configuration-repository/application.yml",
+      "name": "https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repository/application.yml",
       "source": {
         "logging.level.root": "INFO",
         "logging.pattern.console": "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
@@ -111,14 +111,14 @@ Retrieves a flat representation of all configuration properties for an applicati
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/product-service/prod/properties \
+  https://config-server.gogidix-ecommerce.com/product-service/prod/properties \
   -H 'Authorization: Bearer {token}'
 ```
 
 **Example Response**:
 ```properties
 server.port=8080
-spring.datasource.url=jdbc:postgresql://db.exalt-ecommerce.com:5432/product_db
+spring.datasource.url=jdbc:postgresql://db.gogidix-ecommerce.com:5432/product_db
 spring.datasource.username=product_service
 spring.datasource.password={cipher}AQAn6k0hWxPy7CJ+...
 server.tomcat.threads.max=200
@@ -147,7 +147,7 @@ Retrieves a specific property for an application.
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/product-service/prod/server.port \
+  https://config-server.gogidix-ecommerce.com/product-service/prod/server.port \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -173,7 +173,7 @@ Encrypts a sensitive value using the server's encryption key.
 **Example Request**:
 ```bash
 curl -X POST \
-  https://config-server.exalt-ecommerce.com/encrypt \
+  https://config-server.gogidix-ecommerce.com/encrypt \
   -H 'Authorization: Bearer {token}' \
   -d 'sensitive-password-value'
 ```
@@ -198,7 +198,7 @@ Decrypts an encrypted value using the server's encryption key.
 **Example Request**:
 ```bash
 curl -X POST \
-  https://config-server.exalt-ecommerce.com/decrypt \
+  https://config-server.gogidix-ecommerce.com/decrypt \
   -H 'Authorization: Bearer {token}' \
   -d 'AQAn6k0hWxPy7CJ+ZcSH1McQbFZT0cmKwjqRzLw2qf4ZPH4Cg/EsQIk+zFLJ2tGHKdX2zUveqw=='
 ```
@@ -223,7 +223,7 @@ Forces a refresh of the Git repository.
 **Example Request**:
 ```bash
 curl -X POST \
-  https://config-server.exalt-ecommerce.com/actuator/busrefresh \
+  https://config-server.gogidix-ecommerce.com/actuator/busrefresh \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -240,7 +240,7 @@ Lists all branches in the Git repository.
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/repo/branches \
+  https://config-server.gogidix-ecommerce.com/repo/branches \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -269,7 +269,7 @@ Lists all tags in the Git repository.
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/repo/tags \
+  https://config-server.gogidix-ecommerce.com/repo/tags \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -300,7 +300,7 @@ Retrieves the health status of the Configuration Server.
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/actuator/health \
+  https://config-server.gogidix-ecommerce.com/actuator/health \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -354,7 +354,7 @@ Retrieves information about the Configuration Server.
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/actuator/info \
+  https://config-server.gogidix-ecommerce.com/actuator/info \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -394,7 +394,7 @@ Retrieves metrics about the Configuration Server.
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/actuator/metrics \
+  https://config-server.gogidix-ecommerce.com/actuator/metrics \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -444,7 +444,7 @@ Retrieves a specific metric.
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/actuator/metrics/http.server.requests \
+  https://config-server.gogidix-ecommerce.com/actuator/metrics/http.server.requests \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -526,7 +526,7 @@ Retrieves the current environment configuration.
 **Example Request**:
 ```bash
 curl -X GET \
-  https://config-server.exalt-ecommerce.com/actuator/env \
+  https://config-server.gogidix-ecommerce.com/actuator/env \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -585,7 +585,7 @@ Triggers a refresh of configuration in client applications.
 **Example Request**:
 ```bash
 curl -X POST \
-  https://client-application.exalt-ecommerce.com/actuator/refresh \
+  https://client-application.gogidix-ecommerce.com/actuator/refresh \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -610,7 +610,7 @@ Triggers a refresh of configuration in all client applications.
 **Example Request**:
 ```bash
 curl -X POST \
-  https://config-server.exalt-ecommerce.com/actuator/busrefresh \
+  https://config-server.gogidix-ecommerce.com/actuator/busrefresh \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -658,7 +658,7 @@ When rate limits are exceeded, the server returns a 429 Too Many Requests respon
 The Configuration Server API uses HTTP headers for versioning:
 
 ```
-Accept: application/vnd.exalt-ecommerce.v1+json
+Accept: application/vnd.gogidix-ecommerce.v1+json
 ```
 
 Current API versions:
@@ -678,7 +678,7 @@ spring:
     name: product-service
   cloud:
     config:
-      uri: https://config-server.exalt-ecommerce.com
+      uri: https://config-server.gogidix-ecommerce.com
       username: ${CONFIG_USER}
       password: ${CONFIG_PASSWORD}
       label: main
@@ -716,7 +716,7 @@ Configure a client to use encrypted properties:
 # application.yml
 spring:
   datasource:
-    url: jdbc:postgresql://db.exalt-ecommerce.com:5432/product_db
+    url: jdbc:postgresql://db.gogidix-ecommerce.com:5432/product_db
     username: product_service
     password: '{cipher}AQAn6k0hWxPy7CJ+ZcSH1McQbFZT0cmKwjqRzLw2qf4ZPH4Cg/EsQIk+zFLJ2tGHKdX2zUveqw=='
 ```
@@ -730,7 +730,7 @@ Use curl to retrieve configuration properties in a shell script:
 
 # Get configuration properties
 CONFIG=$(curl -s -X GET \
-  https://config-server.exalt-ecommerce.com/product-service/prod/properties \
+  https://config-server.gogidix-ecommerce.com/product-service/prod/properties \
   -H "Authorization: Bearer ${TOKEN}")
 
 # Extract database URL

@@ -1,6 +1,6 @@
 # CI/CD Templates - Enterprise Setup Guide
 
-This comprehensive guide provides enterprise-grade instructions for setting up and configuring the CI/CD Templates service for production deployment across the Social E-commerce Ecosystem. The setup follows com.exalt naming standards and implements industry best practices for security, scalability, and compliance.
+This comprehensive guide provides enterprise-grade instructions for setting up and configuring the CI/CD Templates service for production deployment across the Social E-commerce Ecosystem. The setup follows com.gogidix naming standards and implements industry best practices for security, scalability, and compliance.
 
 ## Prerequisites
 
@@ -28,7 +28,7 @@ This comprehensive guide provides enterprise-grade instructions for setting up a
 
 ### Access Requirements
 
-- **GitHub Organization**: Admin access to exalt-social-ecommerce-ecosystem
+- **GitHub Organization**: Admin access to gogidix-social-ecommerce-ecosystem
 - **Cloud Provider**: Admin access (AWS/Azure/GCP)
 - **Domain Management**: DNS configuration capabilities
 - **Certificate Authority**: SSL/TLS certificate management
@@ -53,7 +53,7 @@ Create the production infrastructure using Terraform:
 ```bash
 # Initialize Terraform workspace
 cd infrastructure/terraform
-terraform init -backend-config="bucket=exalt-terraform-state" \
+terraform init -backend-config="bucket=gogidix-terraform-state" \
                 -backend-config="key=cicd-templates/terraform.tfstate" \
                 -backend-config="region=eu-west-1"
 
@@ -127,7 +127,7 @@ redis = {
   num_cache_nodes = 3
   parameter_group_name = "default.redis7"
   port = 6379
-  subnet_group_name = "exalt-redis-subnet-group"
+  subnet_group_name = "gogidix-redis-subnet-group"
   at_rest_encryption_enabled = true
   transit_encryption_enabled = true
   auth_token_enabled = true
@@ -169,7 +169,7 @@ monitoring = {
   enable_cloudwatch = true
   enable_prometheus = true
   retention_in_days = 90
-  alarm_email = "devops@exalt-ecommerce.com"
+  alarm_email = "devops@gogidix-ecommerce.com"
 }
 
 # Backup and Recovery
@@ -235,7 +235,7 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
 
 ```bash
 # Clone the repository
-git clone https://github.com/exalt-social-ecommerce-ecosystem/central-configuration/ci-cd-templates.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/central-configuration/ci-cd-templates.git
 cd ci-cd-templates
 
 # Switch to production branch
@@ -283,13 +283,13 @@ REDIS_SSL=true
 REDIS_CLUSTER_MODE=true
 
 # GitHub Integration
-GITHUB_ORG=exalt-social-ecommerce-ecosystem
+GITHUB_ORG=gogidix-social-ecommerce-ecosystem
 GITHUB_APP_ID=${GITHUB_APP_ID}
 GITHUB_APP_PRIVATE_KEY=${GITHUB_APP_PRIVATE_KEY}
 GITHUB_WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET}
 
 # Container Registry
-CONTAINER_REGISTRY=ghcr.io/exalt
+CONTAINER_REGISTRY=ghcr.io/gogidix
 REGISTRY_USERNAME=${REGISTRY_USERNAME}
 REGISTRY_PASSWORD=${REGISTRY_PASSWORD}
 
@@ -300,9 +300,9 @@ OAUTH2_CLIENT_ID=${OAUTH2_CLIENT_ID}
 OAUTH2_CLIENT_SECRET=${OAUTH2_CLIENT_SECRET}
 
 # External Services
-CONFIG_SERVER_URL=https://config-server.exalt-platform.com
-SERVICE_REGISTRY_URL=https://service-registry.exalt-platform.com
-VAULT_URL=https://vault.exalt-platform.com
+CONFIG_SERVER_URL=https://config-server.gogidix-platform.com
+SERVICE_REGISTRY_URL=https://service-registry.gogidix-platform.com
+VAULT_URL=https://vault.gogidix-platform.com
 VAULT_TOKEN=${VAULT_TOKEN}
 
 # Monitoring and Observability
@@ -348,7 +348,7 @@ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(l
 sudo apt-get update && sudo apt-get install vault
 
 # Configure Vault authentication
-export VAULT_ADDR="https://vault.exalt-platform.com"
+export VAULT_ADDR="https://vault.gogidix-platform.com"
 vault auth -method=userpass username=${VAULT_USERNAME}
 
 # Create secret engines
@@ -412,14 +412,14 @@ Set up the required secrets in your GitHub organization:
 
 ```bash
 # Using GitHub CLI
-gh secret set DOCKER_USERNAME --org exalt-social-ecommerce-ecosystem --body "${DOCKER_USERNAME}"
-gh secret set DOCKER_PASSWORD --org exalt-social-ecommerce-ecosystem --body "${DOCKER_PASSWORD}"
-gh secret set KUBECONFIG_DEV --org exalt-social-ecommerce-ecosystem --body "$(cat ${KUBECONFIG_DEV} | base64)"
-gh secret set KUBECONFIG_TEST --org exalt-social-ecommerce-ecosystem --body "$(cat ${KUBECONFIG_TEST} | base64)"
-gh secret set KUBECONFIG_STAGE --org exalt-social-ecommerce-ecosystem --body "$(cat ${KUBECONFIG_STAGE} | base64)"
-gh secret set KUBECONFIG_PROD --org exalt-social-ecommerce-ecosystem --body "$(cat ${KUBECONFIG_PROD} | base64)"
-gh secret set SONARQUBE_TOKEN --org exalt-social-ecommerce-ecosystem --body "${SONARQUBE_TOKEN}"
-gh secret set SLACK_WEBHOOK_URL --org exalt-social-ecommerce-ecosystem --body "${SLACK_WEBHOOK_URL}"
+gh secret set DOCKER_USERNAME --org gogidix-social-ecommerce-ecosystem --body "${DOCKER_USERNAME}"
+gh secret set DOCKER_PASSWORD --org gogidix-social-ecommerce-ecosystem --body "${DOCKER_PASSWORD}"
+gh secret set KUBECONFIG_DEV --org gogidix-social-ecommerce-ecosystem --body "$(cat ${KUBECONFIG_DEV} | base64)"
+gh secret set KUBECONFIG_TEST --org gogidix-social-ecommerce-ecosystem --body "$(cat ${KUBECONFIG_TEST} | base64)"
+gh secret set KUBECONFIG_STAGE --org gogidix-social-ecommerce-ecosystem --body "$(cat ${KUBECONFIG_STAGE} | base64)"
+gh secret set KUBECONFIG_PROD --org gogidix-social-ecommerce-ecosystem --body "$(cat ${KUBECONFIG_PROD} | base64)"
+gh secret set SONARQUBE_TOKEN --org gogidix-social-ecommerce-ecosystem --body "${SONARQUBE_TOKEN}"
+gh secret set SLACK_WEBHOOK_URL --org gogidix-social-ecommerce-ecosystem --body "${SLACK_WEBHOOK_URL}"
 ```
 
 ### 2. Configure GitHub Actions Environment Variables
@@ -427,9 +427,9 @@ gh secret set SLACK_WEBHOOK_URL --org exalt-social-ecommerce-ecosystem --body "$
 Set up environment variables for GitHub Actions:
 
 ```bash
-gh variable set DOCKER_REGISTRY --org exalt-social-ecommerce-ecosystem --body "registry.exalt-ecommerce.com"
-gh variable set SONARQUBE_URL --org exalt-social-ecommerce-ecosystem --body "https://sonar.exalt-ecommerce.com"
-gh variable set NOTIFICATION_EMAIL --org exalt-social-ecommerce-ecosystem --body "devops@exalt-ecommerce.com"
+gh variable set DOCKER_REGISTRY --org gogidix-social-ecommerce-ecosystem --body "registry.gogidix-ecommerce.com"
+gh variable set SONARQUBE_URL --org gogidix-social-ecommerce-ecosystem --body "https://sonar.gogidix-ecommerce.com"
+gh variable set NOTIFICATION_EMAIL --org gogidix-social-ecommerce-ecosystem --body "devops@gogidix-ecommerce.com"
 ```
 
 ### 3. Configure GitHub Actions Runners
@@ -438,8 +438,8 @@ For production-grade CI/CD, set up self-hosted runners:
 
 ```bash
 # Create runner group for different environments
-gh api -X POST /orgs/exalt-social-ecommerce-ecosystem/actions/runner-groups -f name="development-runners" -f visibility="private"
-gh api -X POST /orgs/exalt-social-ecommerce-ecosystem/actions/runner-groups -f name="production-runners" -f visibility="private"
+gh api -X POST /orgs/gogidix-social-ecommerce-ecosystem/actions/runner-groups -f name="development-runners" -f visibility="private"
+gh api -X POST /orgs/gogidix-social-ecommerce-ecosystem/actions/runner-groups -f name="production-runners" -f visibility="private"
 
 # Follow GitHub instructions to set up self-hosted runners in each environment
 # Documentation: https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners
@@ -1002,7 +1002,7 @@ Set up integration with the Config Server:
 mkdir -p integrations/config-server
 cat > integrations/config-server/config.json << EOF
 {
-  "service_url": "https://config-server.exalt-ecommerce.com",
+  "service_url": "https://config-server.gogidix-ecommerce.com",
   "profiles": ["dev", "test", "stage", "prod"],
   "config_refresh_endpoint": "/actuator/refresh",
   "config_fetch_timeout": 30
@@ -1019,7 +1019,7 @@ Set up integration with the Secrets Management service:
 mkdir -p integrations/secrets-management
 cat > integrations/secrets-management/config.json << EOF
 {
-  "service_url": "https://vault.exalt-ecommerce.com",
+  "service_url": "https://vault.gogidix-ecommerce.com",
   "auth_method": "kubernetes",
   "secret_paths": {
     "database": "database/credentials",
@@ -1040,14 +1040,14 @@ Set up integration with the Monitoring Service:
 mkdir -p integrations/monitoring
 cat > integrations/monitoring/config.json << EOF
 {
-  "prometheus_url": "https://prometheus.exalt-ecommerce.com",
-  "grafana_url": "https://grafana.exalt-ecommerce.com",
+  "prometheus_url": "https://prometheus.gogidix-ecommerce.com",
+  "grafana_url": "https://grafana.gogidix-ecommerce.com",
   "alert_endpoints": {
     "slack": "https://hooks.slack.com/services/xxx/yyy/zzz",
-    "email": "ops@exalt-ecommerce.com",
+    "email": "ops@gogidix-ecommerce.com",
     "pagerduty": "https://events.pagerduty.com/integration/xxx/enqueue"
   },
-  "metrics_prefix": "exalt_ecommerce",
+  "metrics_prefix": "gogidix_ecommerce",
   "deployment_metrics": [
     "deployment_duration",
     "deployment_success_rate",
@@ -1192,13 +1192,13 @@ cat > notifications/config.json << EOF
     },
     "email": {
       "email-qa-team": {
-        "recipients": ["qa@exalt-ecommerce.com"]
+        "recipients": ["qa@gogidix-ecommerce.com"]
       },
       "email-product-team": {
-        "recipients": ["product@exalt-ecommerce.com"]
+        "recipients": ["product@gogidix-ecommerce.com"]
       },
       "email-stakeholders": {
-        "recipients": ["stakeholders@exalt-ecommerce.com"]
+        "recipients": ["stakeholders@gogidix-ecommerce.com"]
       }
     },
     "pagerduty": {
@@ -1236,7 +1236,7 @@ Apply the templates to a test service:
 
 ```bash
 # Clone a test service repository
-git clone https://github.com/exalt-social-ecommerce-ecosystem/test-service.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/test-service.git
 cd test-service
 
 # Apply CI/CD templates
@@ -1255,7 +1255,7 @@ Monitor the workflow execution in GitHub Actions:
 
 ```bash
 # Using GitHub CLI
-gh run list -R exalt-social-ecommerce-ecosystem/test-service
+gh run list -R gogidix-social-ecommerce-ecosystem/test-service
 ```
 
 ## Rollout Strategy
@@ -1305,7 +1305,7 @@ fi
 echo "Migrating service $SERVICE_NAME ($SERVICE_TYPE) in $SERVICE_DOMAIN domain..."
 
 # Clone service repository
-git clone https://github.com/exalt-social-ecommerce-ecosystem/$SERVICE_NAME.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/$SERVICE_NAME.git
 cd $SERVICE_NAME
 
 # Backup existing workflows
@@ -1374,7 +1374,7 @@ In your service repository, create a `.cicd-overrides.json` file:
     "health-check-timeout": 120
   },
   "notifications": {
-    "additional-recipients": ["team-email@exalt-ecommerce.com"]
+    "additional-recipients": ["team-email@gogidix-ecommerce.com"]
   }
 }
 ```
@@ -1446,13 +1446,13 @@ cat > scripts/update-templates.sh << 'EOF'
 #!/bin/bash
 
 # Get all repositories in the organization
-REPOS=$(gh repo list exalt-social-ecommerce-ecosystem --json name -q '.[].name')
+REPOS=$(gh repo list gogidix-social-ecommerce-ecosystem --json name -q '.[].name')
 
 for REPO in $REPOS; do
   echo "Updating templates for $REPO..."
   
   # Clone repository
-  git clone https://github.com/exalt-social-ecommerce-ecosystem/$REPO.git
+  git clone https://github.com/gogidix-social-ecommerce-ecosystem/$REPO.git
   cd $REPO
   
   # Check if it uses the CI/CD templates
@@ -1622,14 +1622,14 @@ Deploy the CI/CD Templates service:
 
 ```bash
 # Create namespace
-kubectl create namespace com-exalt-central-config
+kubectl create namespace com-gogidix-central-config
 
 # Apply RBAC configurations
 kubectl apply -f k8s/rbac/
 
 # Create secrets from Vault
 kubectl create secret generic ci-cd-templates-secrets \
-  --namespace=com-exalt-central-config \
+  --namespace=com-gogidix-central-config \
   --from-literal=database-url="${DATABASE_URL}" \
   --from-literal=database-username="${DB_USERNAME}" \
   --from-literal=database-password="${DB_PASSWORD}" \
@@ -1641,13 +1641,13 @@ kubectl create secret generic ci-cd-templates-secrets \
 
 # Deploy application
 helm install ci-cd-templates ./helm/ci-cd-templates \
-  --namespace com-exalt-central-config \
+  --namespace com-gogidix-central-config \
   --values helm/ci-cd-templates/values-production.yaml \
   --wait --timeout=600s
 
 # Verify deployment
-kubectl get deployment ci-cd-templates -n com-exalt-central-config
-kubectl get pods -n com-exalt-central-config -l app.kubernetes.io/name=ci-cd-templates
+kubectl get deployment ci-cd-templates -n com-gogidix-central-config
+kubectl get pods -n com-gogidix-central-config -l app.kubernetes.io/name=ci-cd-templates
 ```
 
 #### 3. Load Balancer and Ingress Configuration
@@ -1657,11 +1657,11 @@ kubectl get pods -n com-exalt-central-config -l app.kubernetes.io/name=ci-cd-tem
 kubectl apply -f k8s/ingress/production-ingress.yaml
 
 # Verify ingress
-kubectl get ingress -n com-exalt-central-config
-kubectl describe ingress ci-cd-templates-ingress -n com-exalt-central-config
+kubectl get ingress -n com-gogidix-central-config
+kubectl describe ingress ci-cd-templates-ingress -n com-gogidix-central-config
 
 # Test external access
-curl -k https://cicd-api.exalt-platform.com/actuator/health
+curl -k https://cicd-api.gogidix-platform.com/actuator/health
 ```
 
 ### Phase 4: Security Hardening
@@ -1673,7 +1673,7 @@ curl -k https://cicd-api.exalt-platform.com/actuator/health
 kubectl apply -f k8s/security/network-policies.yaml
 
 # Verify network policies
-kubectl get networkpolicy -n com-exalt-central-config
+kubectl get networkpolicy -n com-gogidix-central-config
 ```
 
 #### 2. Pod Security Standards
@@ -1690,7 +1690,7 @@ kubectl get psp ci-cd-templates-psp
 
 ```bash
 # Run container security scan
-trivy image ghcr.io/exalt/ci-cd-templates:latest
+trivy image ghcr.io/gogidix/ci-cd-templates:latest
 
 # Run Kubernetes configuration scan
 kubesec scan k8s/deployment.yaml
@@ -1708,7 +1708,7 @@ kubectl apply -f k8s/security/security-tests.yaml
 kubectl apply -f k8s/monitoring/service-monitor.yaml
 
 # Verify metrics collection
-kubectl get servicemonitor -n com-exalt-central-config
+kubectl get servicemonitor -n com-gogidix-central-config
 ```
 
 #### 2. Logging Setup
@@ -1740,7 +1740,7 @@ kubectl get prometheusrule -n monitoring
 kubectl apply -f k8s/backup/database-backup-cronjob.yaml
 
 # Verify backup schedule
-kubectl get cronjob -n com-exalt-central-config
+kubectl get cronjob -n com-gogidix-central-config
 ```
 
 #### 2. Configuration Backup
@@ -1759,14 +1759,14 @@ kubectl apply -f k8s/backup/restore-test-job.yaml
 
 ```bash
 # Application health
-curl https://cicd-api.exalt-platform.com/actuator/health
+curl https://cicd-api.gogidix-platform.com/actuator/health
 
 # Database connectivity
-curl https://cicd-api.exalt-platform.com/actuator/health/db
+curl https://cicd-api.gogidix-platform.com/actuator/health/db
 
 # External dependencies
-curl https://cicd-api.exalt-platform.com/actuator/health/github
-curl https://cicd-api.exalt-platform.com/actuator/health/vault
+curl https://cicd-api.gogidix-platform.com/actuator/health/github
+curl https://cicd-api.gogidix-platform.com/actuator/health/vault
 ```
 
 ### 2. Performance Testing
@@ -1873,14 +1873,14 @@ scripts/security/final-security-scan.sh
 
 ```bash
 # Enable traffic routing
-kubectl patch ingress ci-cd-templates-ingress -n com-exalt-central-config \
+kubectl patch ingress ci-cd-templates-ingress -n com-gogidix-central-config \
   -p '{"metadata":{"annotations":{"nginx.ingress.kubernetes.io/rewrite-target":"/"}}}'
 
 # Monitor launch metrics
-kubectl logs -f deployment/ci-cd-templates -n com-exalt-central-config
+kubectl logs -f deployment/ci-cd-templates -n com-gogidix-central-config
 
 # Verify external access
-curl -v https://cicd-api.exalt-platform.com/v1/health
+curl -v https://cicd-api.gogidix-platform.com/v1/health
 ```
 
 ### 3. Post-Launch Monitoring
@@ -1911,16 +1911,16 @@ Refer to the [Operations Guide](../operations/README.md) for detailed informatio
 ## Support and Escalation
 
 ### Technical Support
-- **Level 1**: Service Desk - tickets@exalt-platform.com
-- **Level 2**: Platform Team - platform-support@exalt-platform.com  
-- **Level 3**: Architecture Team - architecture@exalt-platform.com
+- **Level 1**: Service Desk - tickets@gogidix-platform.com
+- **Level 2**: Platform Team - platform-support@gogidix-platform.com  
+- **Level 3**: Architecture Team - architecture@gogidix-platform.com
 
 ### Emergency Contacts
-- **On-Call Engineer**: +31-800-EXALT-1 (24/7)
-- **Platform Lead**: platform-lead@exalt-platform.com
-- **Security Team**: security-incident@exalt-platform.com
+- **On-Call Engineer**: +31-800-GOGIDIX-1 (24/7)
+- **Platform Lead**: platform-lead@gogidix-platform.com
+- **Security Team**: security-incident@gogidix-platform.com
 
 ### Communication Channels
 - **Slack**: #platform-cicd-templates
 - **Microsoft Teams**: Platform Engineering
-- **Email Lists**: platform-team@exalt-platform.com
+- **Email Lists**: platform-team@gogidix-platform.com

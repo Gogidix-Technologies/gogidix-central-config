@@ -1,6 +1,6 @@
 # CI/CD Templates - Enterprise Operations Guide
 
-This comprehensive guide provides enterprise-grade operational procedures for maintaining, monitoring, and managing the CI/CD Templates service across the Social E-commerce Ecosystem. It covers production operations, incident response, compliance monitoring, and continuous improvement processes following com.exalt operational standards.
+This comprehensive guide provides enterprise-grade operational procedures for maintaining, monitoring, and managing the CI/CD Templates service across the Social E-commerce Ecosystem. It covers production operations, incident response, compliance monitoring, and continuous improvement processes following com.gogidix operational standards.
 
 ## Routine Operations
 
@@ -127,7 +127,7 @@ Track template usage across services:
 
 ```bash
 # Generate template usage report
-./scripts/analyze-template-usage.sh --organization exalt-social-ecommerce-ecosystem > template-usage-report.md
+./scripts/analyze-template-usage.sh --organization gogidix-social-ecommerce-ecosystem > template-usage-report.md
 
 # Report includes:
 # - Most used templates
@@ -175,13 +175,13 @@ When diagnosing specific pipeline issues:
    ./scripts/enable-debug-logging.sh repo-name workflow-name
    
    # Review debug logs
-   gh run view --repo exalt-social-ecommerce-ecosystem/repo-name --job-id 12345678 --log
+   gh run view --repo gogidix-social-ecommerce-ecosystem/repo-name --job-id 12345678 --log
    ```
 
 2. **Runner Diagnostics**:
    ```bash
    # Check runner status
-   gh api /orgs/exalt-social-ecommerce-ecosystem/actions/runners | jq .
+   gh api /orgs/gogidix-social-ecommerce-ecosystem/actions/runners | jq .
    
    # Restart problematic runners
    ./scripts/restart-runner.sh runner-name
@@ -420,10 +420,10 @@ Manage access to template repositories:
 
 ```bash
 # List current access permissions
-gh api /orgs/exalt-social-ecommerce-ecosystem/teams | jq '.[] | select(.name | contains("ci-cd"))'
+gh api /orgs/gogidix-social-ecommerce-ecosystem/teams | jq '.[] | select(.name | contains("ci-cd"))'
 
 # Grant team access
-gh api --method PUT /orgs/exalt-social-ecommerce-ecosystem/teams/ci-cd-admins/repos/exalt-social-ecommerce-ecosystem/ci-cd-templates -f permission=admin
+gh api --method PUT /orgs/gogidix-social-ecommerce-ecosystem/teams/ci-cd-admins/repos/gogidix-social-ecommerce-ecosystem/ci-cd-templates -f permission=admin
 
 # Audit access permissions
 ./scripts/audit-permissions.sh > permissions-audit.md
@@ -540,7 +540,7 @@ EOF
 ./scripts/implement-policy-checks.sh policies/workflow-policies.json
 
 # Monitor policy compliance
-./scripts/check-policy-compliance.sh --organization exalt-social-ecommerce-ecosystem
+./scripts/check-policy-compliance.sh --organization gogidix-social-ecommerce-ecosystem
 ```
 
 ## Cross-Domain Integration
@@ -657,7 +657,7 @@ Optimize resource usage in workflows:
 
 ```bash
 # Analyze resource usage
-./scripts/analyze-resource-usage.sh --organization exalt-social-ecommerce-ecosystem --last-days 7
+./scripts/analyze-resource-usage.sh --organization gogidix-social-ecommerce-ecosystem --last-days 7
 
 # Recommend optimizations
 ./scripts/recommend-resource-optimizations.sh > resource-recommendations.md
@@ -672,7 +672,7 @@ Implement effective caching:
 
 ```bash
 # Analyze cache effectiveness
-./scripts/analyze-cache-hit-rate.sh --organization exalt-social-ecommerce-ecosystem --last-days 7
+./scripts/analyze-cache-hit-rate.sh --organization gogidix-social-ecommerce-ecosystem --last-days 7
 
 # Optimize cache configuration
 cat > caching/cache-strategies.json << EOF
@@ -934,12 +934,12 @@ cat > dashboards/data-sources.json << EOF
 {
   "github_actions": {
     "type": "api",
-    "url": "https://api.github.com/orgs/exalt-social-ecommerce-ecosystem/actions/runs",
+    "url": "https://api.github.com/orgs/gogidix-social-ecommerce-ecosystem/actions/runs",
     "credentials": "github_token"
   },
   "prometheus": {
     "type": "prometheus",
-    "url": "https://prometheus.exalt-ecommerce.com"
+    "url": "https://prometheus.gogidix-ecommerce.com"
   }
 }
 EOF
@@ -1163,13 +1163,13 @@ EOF
 
 ```bash
 # List all repositories using templates
-gh api -X GET /search/code?q=org:exalt-social-ecommerce-ecosystem+path:.github/workflows+workflow_call | jq '.items[].repository.name' | sort | uniq
+gh api -X GET /search/code?q=org:gogidix-social-ecommerce-ecosystem+path:.github/workflows+workflow_call | jq '.items[].repository.name' | sort | uniq
 
 # Find failed workflows in the last 24 hours
-gh api -X GET /orgs/exalt-social-ecommerce-ecosystem/actions/runs?status=failure&created=">$(date -d '24 hours ago' -u +%Y-%m-%dT%H:%M:%SZ)" | jq '.workflow_runs[] | {repository: .repository.name, workflow: .name, id: .id, conclusion: .conclusion, created_at: .created_at}'
+gh api -X GET /orgs/gogidix-social-ecommerce-ecosystem/actions/runs?status=failure&created=">$(date -d '24 hours ago' -u +%Y-%m-%dT%H:%M:%SZ)" | jq '.workflow_runs[] | {repository: .repository.name, workflow: .name, id: .id, conclusion: .conclusion, created_at: .created_at}'
 
 # Check runner utilization
-gh api -X GET /orgs/exalt-social-ecommerce-ecosystem/actions/runners | jq '.runners[] | {name: .name, status: .status, busy: .busy}'
+gh api -X GET /orgs/gogidix-social-ecommerce-ecosystem/actions/runners | jq '.runners[] | {name: .name, status: .status, busy: .busy}'
 
 # Generate workflow diagram
 ./scripts/generate-workflow-diagram.sh templates/category/template.yml > diagrams/workflow-template.svg
@@ -1178,10 +1178,10 @@ gh api -X GET /orgs/exalt-social-ecommerce-ecosystem/actions/runners | jq '.runn
 ### Reference Documents
 
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [CI/CD Best Practices Guide](https://exalt-ecommerce.com/docs/devops/cicd-best-practices)
-- [Security Scanning Guide](https://exalt-ecommerce.com/docs/security/pipeline-security)
-- [Template Development Standards](https://exalt-ecommerce.com/docs/standards/template-development)
-- [Deployment Strategy Guide](https://exalt-ecommerce.com/docs/devops/deployment-strategies)
+- [CI/CD Best Practices Guide](https://gogidix-ecommerce.com/docs/devops/cicd-best-practices)
+- [Security Scanning Guide](https://gogidix-ecommerce.com/docs/security/pipeline-security)
+- [Template Development Standards](https://gogidix-ecommerce.com/docs/standards/template-development)
+- [Deployment Strategy Guide](https://gogidix-ecommerce.com/docs/devops/deployment-strategies)
 
 ## Enterprise Operations Framework
 
@@ -1329,29 +1329,29 @@ incident_management:
   escalation_paths:
     - level: 1
       role: "on-call-engineer"
-      contact: "+31-800-EXALT-1"
+      contact: "+31-800-GOGIDIX-1"
       escalation_time: "30 minutes"
       
     - level: 2
       role: "platform-lead"
-      contact: "platform-lead@exalt-platform.com"
+      contact: "platform-lead@gogidix-platform.com"
       escalation_time: "1 hour"
       
     - level: 3
       role: "engineering-director"
-      contact: "eng-director@exalt-platform.com"
+      contact: "eng-director@gogidix-platform.com"
       escalation_time: "2 hours"
       
     - level: 4
       role: "cto"
-      contact: "cto@exalt-platform.com"
+      contact: "cto@gogidix-platform.com"
       escalation_time: "4 hours"
 
   communication_channels:
     primary: "#incident-response"
     escalation: "#executive-alerts"
-    customer_facing: "status.exalt-platform.com"
-    internal_updates: "incidents@exalt-platform.com"
+    customer_facing: "status.gogidix-platform.com"
+    internal_updates: "incidents@gogidix-platform.com"
 ```
 
 ### Business Continuity Operations
@@ -1371,7 +1371,7 @@ FAILOVER_TIMEOUT="300"
 # Function to check region health
 check_region_health() {
     local region=$1
-    local health_endpoint="https://cicd-api-${region}.exalt-platform.com/actuator/health"
+    local health_endpoint="https://cicd-api-${region}.gogidix-platform.com/actuator/health"
     
     echo "Checking health for region: ${region}"
     
@@ -1398,7 +1398,7 @@ initiate_failover() {
     
     # Update load balancer configuration
     kubectl patch service ci-cd-templates-ingress \
-        --namespace com-exalt-central-config \
+        --namespace com-gogidix-central-config \
         --patch "$(cat failover-patches/lb-${to_region}.yaml)"
     
     # Verify failover
@@ -1472,18 +1472,18 @@ The CI/CD Templates service implements continuous compliance monitoring for:
 
 ### Emergency Contact Information
 
-- **Emergency Hotline**: +31-800-EXALT-1 (24/7)
-- **Platform Team**: platform-team@exalt-platform.com
-- **Security Team**: security-incident@exalt-platform.com
-- **Executive Escalation**: executives@exalt-platform.com
+- **Emergency Hotline**: +31-800-GOGIDIX-1 (24/7)
+- **Platform Team**: platform-team@gogidix-platform.com
+- **Security Team**: security-incident@gogidix-platform.com
+- **Executive Escalation**: executives@gogidix-platform.com
 - **Vendor Support**: Listed in vendor contact registry
 
 ### Communication Channels
 
 - **Primary**: #incident-response (Slack)
 - **Escalation**: #executive-alerts (Slack)
-- **Customer Updates**: status.exalt-platform.com
-- **Internal Notifications**: incidents@exalt-platform.com
+- **Customer Updates**: status.gogidix-platform.com
+- **Internal Notifications**: incidents@gogidix-platform.com
 
 ### Glossary
 

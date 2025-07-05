@@ -62,7 +62,7 @@ Grafana CLI
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/exalt-social-ecommerce-ecosystem/central-configuration.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/central-configuration.git
 cd central-configuration/disaster-recovery
 ```
 
@@ -93,11 +93,11 @@ DB_BACKUP_SCHEDULE="0 2 * * *"
 DB_BACKUP_ENCRYPTION_KEY=your-encryption-key
 
 # Storage Configuration
-S3_BACKUP_BUCKET=exalt-backup-dev
+S3_BACKUP_BUCKET=gogidix-backup-dev
 S3_BACKUP_PATH=disaster-recovery
 
 # Notification Configuration
-NOTIFICATION_EMAIL=devops@exalt-social-ecommerce.com
+NOTIFICATION_EMAIL=devops@gogidix-social-ecommerce.com
 SLACK_WEBHOOK_URL=https://hooks.slack.com/services/your-webhook-url
 ```
 
@@ -185,7 +185,7 @@ spring:
   application:
     name: disaster-recovery-service
   datasource:
-    url: jdbc:postgresql://prod-db.exalt-social-ecommerce.com:5432/disaster_recovery_prod
+    url: jdbc:postgresql://prod-db.gogidix-social-ecommerce.com:5432/disaster_recovery_prod
     username: ${DB_PROD_USER}
     password: ${DB_PROD_PASSWORD}
     
@@ -209,7 +209,7 @@ disaster-recovery:
 1. Create an AWS S3 bucket for backups:
 
 ```bash
-aws s3 mb s3://exalt-disaster-recovery-backups
+aws s3 mb s3://gogidix-disaster-recovery-backups
 ```
 
 2. Configure bucket policies:
@@ -230,8 +230,8 @@ aws s3 mb s3://exalt-disaster-recovery-backups
         "s3:DeleteObject"
       ],
       "Resource": [
-        "arn:aws:s3:::exalt-disaster-recovery-backups",
-        "arn:aws:s3:::exalt-disaster-recovery-backups/*"
+        "arn:aws:s3:::gogidix-disaster-recovery-backups",
+        "arn:aws:s3:::gogidix-disaster-recovery-backups/*"
       ]
     }
   ]
@@ -243,7 +243,7 @@ aws s3 mb s3://exalt-disaster-recovery-backups
 1. Enable cross-region replication in your S3 bucket:
 
 ```bash
-aws s3api put-bucket-replication --bucket exalt-disaster-recovery-backups --replication-configuration file://replication-config.json
+aws s3api put-bucket-replication --bucket gogidix-disaster-recovery-backups --replication-configuration file://replication-config.json
 ```
 
 2. Create the replication configuration file (`replication-config.json`):
@@ -258,7 +258,7 @@ aws s3api put-bucket-replication --bucket exalt-disaster-recovery-backups --repl
       "DeleteMarkerReplication": { "Status": "Disabled" },
       "Filter": {},
       "Destination": {
-        "Bucket": "arn:aws:s3:::exalt-disaster-recovery-backups-replica",
+        "Bucket": "arn:aws:s3:::gogidix-disaster-recovery-backups-replica",
         "StorageClass": "STANDARD"
       }
     }
@@ -324,7 +324,7 @@ Solution:
    ```
 2. Verify S3 bucket permissions:
    ```bash
-   aws s3api get-bucket-policy --bucket exalt-disaster-recovery-backups
+   aws s3api get-bucket-policy --bucket gogidix-disaster-recovery-backups
    ```
 3. Check service logs:
    ```bash
@@ -362,4 +362,4 @@ Solution:
    ```
 3. Try restoring to an isolated environment for detailed testing
 
-If issues persist, contact the platform engineering team at platform-support@exalt-social-ecommerce.com.
+If issues persist, contact the platform engineering team at platform-support@gogidix-social-ecommerce.com.

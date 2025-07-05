@@ -7,7 +7,7 @@
 
 ## 📋 Overview
 
-The Deployment Scripts Service is a centralized automation platform for managing deployment processes across the Exalt E-commerce Ecosystem. It provides automated deployment orchestration, script management, environment provisioning, and deployment monitoring across multiple environments and platforms.
+The Deployment Scripts Service is a centralized automation platform for managing deployment processes across the Gogidix E-commerce Ecosystem. It provides automated deployment orchestration, script management, environment provisioning, and deployment monitoring across multiple environments and platforms.
 
 ## 🎯 Purpose
 
@@ -127,7 +127,7 @@ graph TB
 deployment-scripts/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/exalt/centralconfiguration/deploymentscripts/
+│   │   ├── java/com/gogidix/centralconfiguration/deploymentscripts/
 │   │   │   ├── DeploymentScriptsApplication.java         # Main application class
 │   │   │   ├── config/
 │   │   │   │   ├── DeploymentConfig.java                # Deployment configuration
@@ -172,7 +172,7 @@ deployment-scripts/
 │   │           ├── docker/                              # Docker scripts
 │   │           └── cloud/                               # Cloud provider scripts
 │   └── test/
-│       └── java/com/exalt/centralconfiguration/deploymentscripts/
+│       └── java/com/gogidix/centralconfiguration/deploymentscripts/
 │           ├── DeploymentScriptsApplicationTest.java
 │           ├── service/
 │           │   ├── DeploymentServiceTest.java
@@ -181,16 +181,16 @@ deployment-scripts/
 │               └── DeploymentIntegrationTest.java
 ├── tests/
 │   ├── unit/
-│   │   └── com/exalt/centralconfiguration/deploymentscripts/
+│   │   └── com/gogidix/centralconfiguration/deploymentscripts/
 │   │       ├── service/
 │   │       │   └── DeploymentServiceTest.java
 │   │       └── controller/
 │   │           └── DeploymentControllerTest.java
 │   ├── integration/
-│   │   └── com/exalt/centralconfiguration/deploymentscripts/
+│   │   └── com/gogidix/centralconfiguration/deploymentscripts/
 │   │       └── DeploymentIntegrationTest.java
 │   ├── e2e/
-│   │   └── com/exalt/centralconfiguration/deploymentscripts/
+│   │   └── com/gogidix/centralconfiguration/deploymentscripts/
 │   │       └── DeploymentE2ETest.java
 │   └── performance/
 │       └── DeploymentPerformanceTest.js
@@ -1229,13 +1229,13 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 For questions, issues, or contributions:
 
-- **Documentation**: [Internal Wiki](https://wiki.exalt.com/deployment-scripts)
-- **Issues**: [JIRA Project](https://jira.exalt.com/projects/DEPLOY)
-- **Support**: [Slack #deployment-scripts](https://exalt.slack.com/channels/deployment-scripts)
-- **Email**: deployment-scripts@exalt.com
+- **Documentation**: [Internal Wiki](https://wiki.gogidix.com/deployment-scripts)
+- **Issues**: [JIRA Project](https://jira.gogidix.com/projects/DEPLOY)
+- **Support**: [Slack #deployment-scripts](https://gogidix.slack.com/channels/deployment-scripts)
+- **Email**: deployment-scripts@gogidix.com
 
 ---
 
-**License**: Internal Use - Exalt Application Limited  
+**License**: Internal Use - Gogidix Application Limited  
 **Maintainer**: Platform Infrastructure Team  
 **Last Updated**: June 16, 2025

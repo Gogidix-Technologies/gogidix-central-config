@@ -787,7 +787,7 @@ Maintain audit records for compliance:
    find logs -name "migrations*.log" -type f -mtime +90 -exec gzip {} \;
    
    # Move archived logs to long-term storage
-   aws s3 cp logs/archive/ s3://exalt-ecommerce-audit-logs/database-migrations/ --recursive
+   aws s3 cp logs/archive/ s3://gogidix-ecommerce-audit-logs/database-migrations/ --recursive
    ```
 
 ### Backup Management
@@ -820,7 +820,7 @@ Manage database backups:
    find backup -type f -name "*.rdb" -mtime +30 -exec gzip {} \;
    
    # Move archived backups to long-term storage
-   aws s3 cp backup/ s3://exalt-ecommerce-database-backups/ --recursive --exclude "*" --include "*.gz"
+   aws s3 cp backup/ s3://gogidix-ecommerce-database-backups/ --recursive --exclude "*" --include "*.gz"
    EOF
    
    # Make script executable
@@ -1161,8 +1161,8 @@ Manage region-specific migrations:
      europe:
        countries: [AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, HU, IE, IT, LV, LT, LU, MT, NL, PL, PT, RO, SK, SI, ES, SE]
        databases:
-         postgresql: jdbc:postgresql://eu-postgres.exalt-ecommerce.com:5432/social_commerce
-         mongodb: mongodb://eu-mongodb.exalt-ecommerce.com:27017/warehousing
+         postgresql: jdbc:postgresql://eu-postgres.gogidix-ecommerce.com:5432/social_commerce
+         mongodb: mongodb://eu-mongodb.gogidix-ecommerce.com:27017/warehousing
        migrations:
          locations:
            - classpath:db/migration/{technology}/{domain}
@@ -1171,8 +1171,8 @@ Manage region-specific migrations:
      africa:
        countries: [ZA, NG, KE, GH, ET, TZ, UG, RW, ZM, ZW]
        databases:
-         postgresql: jdbc:postgresql://af-postgres.exalt-ecommerce.com:5432/social_commerce
-         mongodb: mongodb://af-mongodb.exalt-ecommerce.com:27017/warehousing
+         postgresql: jdbc:postgresql://af-postgres.gogidix-ecommerce.com:5432/social_commerce
+         mongodb: mongodb://af-mongodb.gogidix-ecommerce.com:27017/warehousing
        migrations:
          locations:
            - classpath:db/migration/{technology}/{domain}
@@ -1406,7 +1406,7 @@ Optimize database connection pool:
      echo "WARNING: High connection pool usage"
      
      # Send alert
-     curl -X POST "https://alert-service.exalt-ecommerce.com/api/alerts" \
+     curl -X POST "https://alert-service.gogidix-ecommerce.com/api/alerts" \
        -H "Content-Type: application/json" \
        -d "{\"service\": \"database-migrations\", \"level\": \"warning\", \"message\": \"High connection pool usage: \$usage%\"}"
    fi
@@ -1492,7 +1492,7 @@ Securely manage database credentials:
    secrets:
      provider: vault
      vault:
-       uri: https://vault.exalt-ecommerce.com
+       uri: https://vault.gogidix-ecommerce.com
        authentication:
          method: kubernetes
          role: database-migrations
@@ -1605,7 +1605,7 @@ Maintain comprehensive audit logs:
    mail -s "Database Migration Audit Report \$(date -d "last month" +%Y-%m)" \
      -a audit_report_\$(date -d "last month" +%Y-%m).csv \
      -a audit_summary_\$(date -d "last month" +%Y-%m).csv \
-     compliance@exalt-ecommerce.com < /dev/null
+     compliance@gogidix-ecommerce.com < /dev/null
    EOF
    
    # Make script executable
@@ -1779,10 +1779,10 @@ alerting:
       webhook: ${SLACK_WEBHOOK_URL}
       channel: "#database-alerts"
     email:
-      smtp-server: mail.exalt-ecommerce.com
+      smtp-server: mail.gogidix-ecommerce.com
       recipients:
-        - dba-team@exalt-ecommerce.com
-        - devops-team@exalt-ecommerce.com
+        - dba-team@gogidix-ecommerce.com
+        - devops-team@gogidix-ecommerce.com
     pagerduty:
       integration-key: ${PAGERDUTY_INTEGRATION_KEY}
       
@@ -1976,7 +1976,7 @@ execute_disaster_recovery() {
             
             # Verify service health
             for i in {1..30}; do
-                if curl -f http://database-migrations.$target_region.exalt-ecommerce.com/actuator/health; then
+                if curl -f http://database-migrations.$target_region.gogidix-ecommerce.com/actuator/health; then
                     echo "Service healthy in target region"
                     break
                 fi
@@ -2008,11 +2008,11 @@ restore_from_backup() {
     echo "Restoring from backup: $backup_timestamp"
     
     # PostgreSQL restore
-    aws s3 cp s3://exalt-ecommerce-db-backups/postgresql/backup_$backup_timestamp.dump /tmp/
+    aws s3 cp s3://gogidix-ecommerce-db-backups/postgresql/backup_$backup_timestamp.dump /tmp/
     pg_restore -h $POSTGRES_HOST_REPLICA -U $POSTGRES_USER -d migration_registry /tmp/backup_$backup_timestamp.dump
     
     # MongoDB restore
-    aws s3 cp s3://exalt-ecommerce-db-backups/mongodb/backup_$backup_timestamp.tar.gz /tmp/
+    aws s3 cp s3://gogidix-ecommerce-db-backups/mongodb/backup_$backup_timestamp.tar.gz /tmp/
     tar -xzf /tmp/backup_$backup_timestamp.tar.gz -C /tmp/
     mongorestore --host $MONGODB_HOST_REPLICA --username $MONGODB_USER --password $MONGODB_PASSWORD --authenticationDatabase admin /tmp/mongodb_backup/
     
@@ -2568,14 +2568,14 @@ curl -X GET "http://localhost:8080/actuator/metrics/migration.execution" \
 
 ### Reference Documents
 
-- [Database Migration Strategies](https://exalt-ecommerce.com/docs/database/migration-strategies)
-- [Zero-Downtime Migration Patterns](https://exalt-ecommerce.com/docs/database/zero-downtime-patterns)
-- [Database Security Standards](https://exalt-ecommerce.com/docs/security/database-security)
-- [Microservices Database Patterns](https://exalt-ecommerce.com/docs/architecture/microservices-databases)
-- [PostgreSQL Performance Optimization](https://exalt-ecommerce.com/docs/database/postgresql-optimization)
-- [MongoDB Schema Design](https://exalt-ecommerce.com/docs/database/mongodb-schema-design)
-- [Elasticsearch Index Management](https://exalt-ecommerce.com/docs/database/elasticsearch-indices)
-- [Redis Data Structure Design](https://exalt-ecommerce.com/docs/database/redis-design-patterns)
+- [Database Migration Strategies](https://gogidix-ecommerce.com/docs/database/migration-strategies)
+- [Zero-Downtime Migration Patterns](https://gogidix-ecommerce.com/docs/database/zero-downtime-patterns)
+- [Database Security Standards](https://gogidix-ecommerce.com/docs/security/database-security)
+- [Microservices Database Patterns](https://gogidix-ecommerce.com/docs/architecture/microservices-databases)
+- [PostgreSQL Performance Optimization](https://gogidix-ecommerce.com/docs/database/postgresql-optimization)
+- [MongoDB Schema Design](https://gogidix-ecommerce.com/docs/database/mongodb-schema-design)
+- [Elasticsearch Index Management](https://gogidix-ecommerce.com/docs/database/elasticsearch-indices)
+- [Redis Data Structure Design](https://gogidix-ecommerce.com/docs/database/redis-design-patterns)
 
 ### Glossary
 

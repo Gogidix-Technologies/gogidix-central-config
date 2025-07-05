@@ -56,7 +56,7 @@ SOPS 3.7+ (for encrypted secrets)
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/exalt-social-ecommerce-ecosystem/central-configuration.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/central-configuration.git
 cd central-configuration/infrastructure-as-code
 ```
 
@@ -81,7 +81,7 @@ AWS_SECRET_ACCESS_KEY=your-secret-key
 AWS_DEFAULT_REGION=${REGION}
 
 # State Storage
-TF_STATE_BUCKET=exalt-tf-state-${ENVIRONMENT}
+TF_STATE_BUCKET=gogidix-tf-state-${ENVIRONMENT}
 TF_STATE_KEY=infrastructure/terraform.tfstate
 TF_STATE_REGION=${REGION}
 
@@ -153,7 +153,7 @@ Each environment should have its own configuration in the `environments` directo
 
 ```hcl
 # environments/dev/backend.hcl
-bucket         = "exalt-tf-state-dev"
+bucket         = "gogidix-tf-state-dev"
 key            = "infrastructure/terraform.tfstate"
 region         = "us-west-2"
 dynamodb_table = "terraform-locks"

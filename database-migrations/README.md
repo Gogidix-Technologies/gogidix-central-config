@@ -7,7 +7,7 @@
 
 ## 📋 Overview
 
-The Database Migrations Service is a centralized database schema management service for the Exalt E-commerce Ecosystem. It provides automated database migrations, version control for database schemas, rollback capabilities, and multi-environment database management across all microservices.
+The Database Migrations Service is a centralized database schema management service for the Gogidix E-commerce Ecosystem. It provides automated database migrations, version control for database schemas, rollback capabilities, and multi-environment database management across all microservices.
 
 ## 🎯 Purpose
 
@@ -111,7 +111,7 @@ graph TB
 database-migrations/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/exalt/centralconfiguration/databasemigrations/
+│   │   ├── java/com/gogidix/centralconfiguration/databasemigrations/
 │   │   │   ├── DatabaseMigrationsApplication.java      # Main application class
 │   │   │   ├── config/
 │   │   │   │   ├── DatabaseConfig.java                # Database configuration
@@ -152,7 +152,7 @@ database-migrations/
 │   │               ├── staging/                       # Staging seeds
 │   │               └── test/                          # Test seeds
 │   └── test/
-│       └── java/com/exalt/centralconfiguration/databasemigrations/
+│       └── java/com/gogidix/centralconfiguration/databasemigrations/
 │           ├── DatabaseMigrationsApplicationTest.java
 │           ├── service/
 │           │   ├── MigrationServiceTest.java
@@ -161,16 +161,16 @@ database-migrations/
 │               └── MigrationIntegrationTest.java
 ├── tests/
 │   ├── unit/
-│   │   └── com/exalt/centralconfiguration/databasemigrations/
+│   │   └── com/gogidix/centralconfiguration/databasemigrations/
 │   │       ├── service/
 │   │       │   └── MigrationServiceTest.java
 │   │       └── controller/
 │   │           └── MigrationControllerTest.java
 │   ├── integration/
-│   │   └── com/exalt/centralconfiguration/databasemigrations/
+│   │   └── com/gogidix/centralconfiguration/databasemigrations/
 │   │       └── MigrationIntegrationTest.java
 │   ├── e2e/
-│   │   └── com/exalt/centralconfiguration/databasemigrations/
+│   │   └── com/gogidix/centralconfiguration/databasemigrations/
 │   │       └── DatabaseMigrationsE2ETest.java
 │   └── performance/
 │       └── MigrationPerformanceTest.js
@@ -291,13 +291,13 @@ migrations/mongodb/
 ```bash
 # Required environment variables
 export DB_MIGRATIONS_PORT=8889
-export DB_POSTGRES_URL=jdbc:postgresql://localhost:5432/exalt_db
+export DB_POSTGRES_URL=jdbc:postgresql://localhost:5432/gogidix_db
 export DB_POSTGRES_USERNAME=postgres
 export DB_POSTGRES_PASSWORD=postgres
-export DB_MYSQL_URL=jdbc:mysql://localhost:3306/exalt_db
+export DB_MYSQL_URL=jdbc:mysql://localhost:3306/gogidix_db
 export DB_MYSQL_USERNAME=root
 export DB_MYSQL_PASSWORD=root
-export DB_MONGODB_URI=mongodb://localhost:27017/exalt_db
+export DB_MONGODB_URI=mongodb://localhost:27017/gogidix_db
 
 # Optional environment variables
 export FLYWAY_BASELINE_ON_MIGRATE=true
@@ -606,10 +606,10 @@ public class RollbackService {
 
 ```sql
 -- V1__Create_initial_schema.sql
-CREATE SCHEMA IF NOT EXISTS exalt;
+CREATE SCHEMA IF NOT EXISTS gogidix;
 
 -- Create users table
-CREATE TABLE exalt.users (
+CREATE TABLE gogidix.users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
     username VARCHAR(100) UNIQUE NOT NULL,
@@ -621,9 +621,9 @@ CREATE TABLE exalt.users (
 );
 
 -- Create indexes
-CREATE INDEX idx_users_email ON exalt.users(email);
-CREATE INDEX idx_users_username ON exalt.users(username);
-CREATE INDEX idx_users_created_at ON exalt.users(created_at);
+CREATE INDEX idx_users_email ON gogidix.users(email);
+CREATE INDEX idx_users_username ON gogidix.users(username);
+CREATE INDEX idx_users_created_at ON gogidix.users(created_at);
 
 -- Create trigger for updated_at
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -635,7 +635,7 @@ END;
 $$ language 'plpgsql';
 
 CREATE TRIGGER update_users_updated_at 
-    BEFORE UPDATE ON exalt.users 
+    BEFORE UPDATE ON gogidix.users 
     FOR EACH ROW 
     EXECUTE FUNCTION update_updated_at_column();
 ```
@@ -644,8 +644,8 @@ CREATE TRIGGER update_users_updated_at
 
 ```sql
 -- V1__Create_initial_schema.sql
-CREATE DATABASE IF NOT EXISTS exalt;
-USE exalt;
+CREATE DATABASE IF NOT EXISTS gogidix;
+USE gogidix;
 
 -- Create products table
 CREATE TABLE products (
@@ -985,7 +985,7 @@ spec:
     spec:
       containers:
       - name: database-migrations
-        image: exalt/database-migrations:1.0.0
+        image: gogidix/database-migrations:1.0.0
         ports:
         - containerPort: 8889
         env:
@@ -1057,13 +1057,13 @@ spec:
 
 For questions, issues, or contributions:
 
-- **Documentation**: [Internal Wiki](https://wiki.exalt.com/database-migrations)
-- **Issues**: [JIRA Project](https://jira.exalt.com/projects/DBMIG)
-- **Support**: [Slack #database-migrations](https://exalt.slack.com/channels/database-migrations)
-- **Email**: database-migrations@exalt.com
+- **Documentation**: [Internal Wiki](https://wiki.gogidix.com/database-migrations)
+- **Issues**: [JIRA Project](https://jira.gogidix.com/projects/DBMIG)
+- **Support**: [Slack #database-migrations](https://gogidix.slack.com/channels/database-migrations)
+- **Email**: database-migrations@gogidix.com
 
 ---
 
-**License**: Internal Use - Exalt Application Limited  
+**License**: Internal Use - Gogidix Application Limited  
 **Maintainer**: Platform Infrastructure Team  
 **Last Updated**: June 16, 2025

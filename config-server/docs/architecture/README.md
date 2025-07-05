@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-The Configuration Server serves as the centralized configuration management hub for the Exalt Social E-commerce Ecosystem, providing secure, scalable, and highly available configuration services to all microservices across multiple regions and environments. Built on Spring Cloud Config Server, it implements enterprise-grade patterns for configuration delivery, encryption, versioning, and auditing.
+The Configuration Server serves as the centralized configuration management hub for the Gogidix Social E-commerce Ecosystem, providing secure, scalable, and highly available configuration services to all microservices across multiple regions and environments. Built on Spring Cloud Config Server, it implements enterprise-grade patterns for configuration delivery, encryption, versioning, and auditing.
 
 ## Architecture Overview
 

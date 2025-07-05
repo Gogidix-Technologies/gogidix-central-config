@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	
-	<groupId>com.exalt.centralconfiguration</groupId>
+	<groupId>com.gogidix.centralconfiguration</groupId>
 	<artifactId>database-migrations</artifactId>
 	<version>1.0.0</version>
 	<name>database-migrations</name>

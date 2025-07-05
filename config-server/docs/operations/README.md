@@ -25,11 +25,11 @@ Monitor the Configuration Server health using the following endpoints:
 
 ```bash
 # Check overall health
-curl -k https://config-server.exalt-ecommerce.com/actuator/health
+curl -k https://config-server.gogidix-ecommerce.com/actuator/health
 
 # Check specific health indicators
-curl -k https://config-server.exalt-ecommerce.com/actuator/health/git
-curl -k https://config-server.exalt-ecommerce.com/actuator/health/diskSpace
+curl -k https://config-server.gogidix-ecommerce.com/actuator/health/git
+curl -k https://config-server.gogidix-ecommerce.com/actuator/health/diskSpace
 ```
 
 Set up regular health checks in your monitoring system (Prometheus/Grafana) with the following thresholds:
@@ -46,7 +46,7 @@ Schedule daily backups of the configuration repository:
 
 ```bash
 # Clone the repository
-git clone https://github.com/exalt-social-ecommerce-ecosystem/configuration-repository.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repository.git
 
 # Create a timestamped backup
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
@@ -68,7 +68,7 @@ Back up the Config Server's internal database:
 
 ```bash
 # For embedded H2 database
-curl -k -X POST https://config-server.exalt-ecommerce.com/actuator/h2-console/backup
+curl -k -X POST https://config-server.gogidix-ecommerce.com/actuator/h2-console/backup
 ```
 
 ### Log Management
@@ -112,12 +112,12 @@ Monitor the following metrics:
 
 ```bash
 # Get all available metrics
-curl -k https://config-server.exalt-ecommerce.com/actuator/metrics
+curl -k https://config-server.gogidix-ecommerce.com/actuator/metrics
 
 # Get specific metrics
-curl -k https://config-server.exalt-ecommerce.com/actuator/metrics/http.server.requests
-curl -k https://config-server.exalt-ecommerce.com/actuator/metrics/system.cpu.usage
-curl -k https://config-server.exalt-ecommerce.com/actuator/metrics/jvm.memory.used
+curl -k https://config-server.gogidix-ecommerce.com/actuator/metrics/http.server.requests
+curl -k https://config-server.gogidix-ecommerce.com/actuator/metrics/system.cpu.usage
+curl -k https://config-server.gogidix-ecommerce.com/actuator/metrics/jvm.memory.used
 ```
 
 Set up Grafana dashboards to monitor:
@@ -151,7 +151,7 @@ Follow these steps to add new configuration properties:
 
 1. Clone the configuration repository
    ```bash
-   git clone https://github.com/exalt-social-ecommerce-ecosystem/configuration-repository.git
+   git clone https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repository.git
    cd configuration-repository
    ```
 
@@ -173,7 +173,7 @@ Follow these steps to add new configuration properties:
 
 4. Verify the changes are available
    ```bash
-   curl -k https://config-server.exalt-ecommerce.com/product-service/prod
+   curl -k https://config-server.gogidix-ecommerce.com/product-service/prod
    ```
 
 ### Encrypting Sensitive Properties
@@ -182,7 +182,7 @@ To encrypt sensitive configuration values:
 
 1. Use the encryption endpoint
    ```bash
-   curl -k -X POST https://config-server.exalt-ecommerce.com/encrypt -d 'sensitive-value'
+   curl -k -X POST https://config-server.gogidix-ecommerce.com/encrypt -d 'sensitive-value'
    ```
 
 2. Add the encrypted value to the configuration file
@@ -193,7 +193,7 @@ To encrypt sensitive configuration values:
 
 3. Verify encryption works correctly
    ```bash
-   curl -k https://config-server.exalt-ecommerce.com/product-service/prod
+   curl -k https://config-server.gogidix-ecommerce.com/product-service/prod
    # The value should be decrypted in the response
    ```
 
@@ -207,7 +207,7 @@ git tag -a v1.2.0 -m "Stable configuration for release 1.2.0"
 git push origin v1.2.0
 
 # Access a specific version of configuration
-curl -k https://config-server.exalt-ecommerce.com/product-service/prod?label=v1.2.0
+curl -k https://config-server.gogidix-ecommerce.com/product-service/prod?label=v1.2.0
 ```
 
 ### Rolling Back Configurations
@@ -254,7 +254,7 @@ Always notify service teams when rolling back configurations to ensure proper ha
 
 3. Test Git connection manually
    ```bash
-   git clone https://github.com/exalt-social-ecommerce-ecosystem/configuration-repository.git
+   git clone https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repository.git
    ```
 
 4. Restart the Config Server if credentials are updated
@@ -361,7 +361,7 @@ If memory usage keeps increasing over time:
    jmap -dump:format=b,file=heap_dump.bin <PID>
    
    # Via actuator endpoint
-   curl -k -X POST https://config-server.exalt-ecommerce.com/actuator/heapdump > heap_dump.bin
+   curl -k -X POST https://config-server.gogidix-ecommerce.com/actuator/heapdump > heap_dump.bin
    ```
 
 3. Analyze heap dumps with tools like Eclipse Memory Analyzer (MAT)
@@ -376,7 +376,7 @@ For performance issues:
    jstack <PID> > thread_dump.txt
    
    # Via actuator endpoint
-   curl -k https://config-server.exalt-ecommerce.com/actuator/threaddump > thread_dump.txt
+   curl -k https://config-server.gogidix-ecommerce.com/actuator/threaddump > thread_dump.txt
    ```
 
 2. Analyze thread states for blocked or waiting threads
@@ -395,7 +395,7 @@ If services report configuration issues:
 
 1. Verify configuration exists
    ```bash
-   curl -k https://config-server.exalt-ecommerce.com/product-service/prod
+   curl -k https://config-server.gogidix-ecommerce.com/product-service/prod
    ```
 
 2. Check configuration values in Git repository
@@ -408,7 +408,7 @@ If services report configuration issues:
    spring:
      cloud:
        config:
-         uri: https://config-server.exalt-ecommerce.com
+         uri: https://config-server.gogidix-ecommerce.com
          fail-fast: true
    ```
 
@@ -852,7 +852,7 @@ Set up Grafana dashboards for:
 1. **Verification**: Confirm changes in Git repository
 2. **Execution**:
    ```bash
-   curl -k -X POST https://config-server.exalt-ecommerce.com/actuator/busrefresh
+   curl -k -X POST https://config-server.gogidix-ecommerce.com/actuator/busrefresh
    ```
 3. **Validation**: Verify new configuration is available
 4. **Notification**: Inform service teams of configuration update
@@ -910,20 +910,20 @@ kubectl get pods -l app=config-server
 kubectl logs -l app=config-server --tail=100
 
 # Check endpoints
-curl -k https://config-server.exalt-ecommerce.com/actuator/health
-curl -k https://config-server.exalt-ecommerce.com/actuator/info
-curl -k https://config-server.exalt-ecommerce.com/actuator/env
+curl -k https://config-server.gogidix-ecommerce.com/actuator/health
+curl -k https://config-server.gogidix-ecommerce.com/actuator/info
+curl -k https://config-server.gogidix-ecommerce.com/actuator/env
 
 # Test configuration retrieval
-curl -k https://config-server.exalt-ecommerce.com/application/default
-curl -k https://config-server.exalt-ecommerce.com/product-service/prod
+curl -k https://config-server.gogidix-ecommerce.com/application/default
+curl -k https://config-server.gogidix-ecommerce.com/product-service/prod
 
 # Force configuration refresh
-curl -k -X POST https://config-server.exalt-ecommerce.com/actuator/busrefresh
+curl -k -X POST https://config-server.gogidix-ecommerce.com/actuator/busrefresh
 
 # Encrypt/decrypt values
-curl -k -X POST https://config-server.exalt-ecommerce.com/encrypt -d 'value-to-encrypt'
-curl -k -X POST https://config-server.exalt-ecommerce.com/decrypt -d '{cipher}encrypted-value'
+curl -k -X POST https://config-server.gogidix-ecommerce.com/encrypt -d 'value-to-encrypt'
+curl -k -X POST https://config-server.gogidix-ecommerce.com/decrypt -d '{cipher}encrypted-value'
 ```
 
 ### Enterprise Operations Procedures
@@ -935,7 +935,7 @@ Follow enterprise change management procedures for all configuration updates:
 1. **Change Request Process**
    ```bash
    # Create change request in ServiceNow
-   curl -X POST "https://servicenow.exalt-ecommerce.com/api/now/table/change_request" \
+   curl -X POST "https://servicenow.gogidix-ecommerce.com/api/now/table/change_request" \
      -H "Authorization: Bearer ${SERVICENOW_TOKEN}" \
      -H "Content-Type: application/json" \
      -d '{
@@ -1040,7 +1040,7 @@ Follow enterprise change management procedures for all configuration updates:
        git push $region main
        
        # Trigger config refresh in target region
-       curl -X POST "https://config-server-${region}.exalt-ecommerce.com/actuator/busrefresh"
+       curl -X POST "https://config-server-${region}.gogidix-ecommerce.com/actuator/busrefresh"
      fi
    done
    ```
@@ -1057,7 +1057,7 @@ Follow enterprise change management procedures for all configuration updates:
      echo "Checking health for region: $region"
      
      response=$(curl -s -o /dev/null -w "%{http_code}" \
-       "https://config-server-${region}.exalt-ecommerce.com/actuator/health")
+       "https://config-server-${region}.gogidix-ecommerce.com/actuator/health")
      
      if [ "$response" -eq 200 ]; then
        echo "✓ $region is healthy"
@@ -1076,7 +1076,7 @@ Follow enterprise change management procedures for all configuration updates:
    # application-prod.yml
    spring:
      zipkin:
-       base-url: https://zipkin.exalt-ecommerce.com
+       base-url: https://zipkin.gogidix-ecommerce.com
      sleuth:
        sampler:
          probability: 0.1
@@ -1118,7 +1118,7 @@ Follow enterprise change management procedures for all configuration updates:
    #!/bin/bash
    # synthetic-monitor.sh
    
-   CONFIG_SERVER_URL="https://config-server.exalt-ecommerce.com"
+   CONFIG_SERVER_URL="https://config-server.gogidix-ecommerce.com"
    TEST_SERVICE="product-service"
    TEST_PROFILE="prod"
    
@@ -1135,7 +1135,7 @@ Follow enterprise change management procedures for all configuration updates:
    else
      echo "Synthetic test FAILED: ${response}, ${duration}ms"
      # Send alert
-     curl -X POST "https://alerts.exalt-ecommerce.com/webhook" \
+     curl -X POST "https://alerts.gogidix-ecommerce.com/webhook" \
        -d "{'alert': 'config-server-synthetic-test-failed', 'duration': $duration}"
    fi
    ```
@@ -1181,7 +1181,7 @@ Follow enterprise change management procedures for all configuration updates:
      echo "Certificate expires in $days_left days, renewing..."
      
      # Generate new certificate using Let's Encrypt
-     certbot renew --cert-name config-server.exalt-ecommerce.com
+     certbot renew --cert-name config-server.gogidix-ecommerce.com
      
      # Update Kubernetes secret
      kubectl create secret tls config-server-tls \
@@ -1294,7 +1294,7 @@ Follow enterprise change management procedures for all configuration updates:
      # Identify personal data patterns
      grep -E "(email|phone|address)" $config_file | while read line; do
        # Encrypt using GPG
-       encrypted=$(echo "$line" | gpg --encrypt --armor -r config-server@exalt.com)
+       encrypted=$(echo "$line" | gpg --encrypt --armor -r config-server@gogidix.com)
        # Replace in file
        sed -i "s/$line/$encrypted/" $config_file
      done
@@ -1339,7 +1339,7 @@ Follow enterprise change management procedures for all configuration updates:
    detect_disaster() {
      # Check primary region health
      health_check=$(curl -s -o /dev/null -w "%{http_code}" \
-       "https://config-server-${PRIMARY_REGION}.exalt-ecommerce.com/actuator/health")
+       "https://config-server-${PRIMARY_REGION}.gogidix-ecommerce.com/actuator/health")
      
      if [ "$health_check" != "200" ]; then
        return 1  # Disaster detected

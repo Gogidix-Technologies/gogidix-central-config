@@ -7,7 +7,7 @@
 
 ## 📋 Overview
 
-The Config Server Service is a centralized configuration management service built on Spring Cloud Config Server. It provides externalized configuration management for all microservices in the Exalt E-commerce Ecosystem, enabling dynamic configuration updates, environment-specific configurations, and centralized configuration governance.
+The Config Server Service is a centralized configuration management service built on Spring Cloud Config Server. It provides externalized configuration management for all microservices in the Gogidix E-commerce Ecosystem, enabling dynamic configuration updates, environment-specific configurations, and centralized configuration governance.
 
 ## 🎯 Purpose
 
@@ -97,7 +97,7 @@ graph TB
 config-server/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/exalt/centralconfiguration/configserver/
+│   │   ├── java/com/gogidix/centralconfiguration/configserver/
 │   │   │   ├── ConfigServerApplication.java        # Main application class
 │   │   │   └── config/
 │   │   │       ├── SecurityConfig.java             # Security configuration
@@ -114,7 +114,7 @@ config-server/
 │   │           ├── encryption-key.txt              # Encryption key (gitignored)
 │   │           └── known_hosts                     # SSH known hosts
 │   └── test/
-│       └── java/com/exalt/centralconfiguration/configserver/
+│       └── java/com/gogidix/centralconfiguration/configserver/
 │           ├── ConfigServerApplicationTest.java
 │           ├── config/
 │           │   └── SecurityConfigTest.java
@@ -122,14 +122,14 @@ config-server/
 │               └── ConfigServerIntegrationTest.java
 ├── tests/
 │   ├── unit/
-│   │   └── com/exalt/centralconfiguration/configserver/
+│   │   └── com/gogidix/centralconfiguration/configserver/
 │   │       └── config/
 │   │           └── SecurityConfigTest.java
 │   ├── integration/
-│   │   └── com/exalt/centralconfiguration/configserver/
+│   │   └── com/gogidix/centralconfiguration/configserver/
 │   │       └── ConfigServerIntegrationTest.java
 │   ├── e2e/
-│   │   └── com/exalt/centralconfiguration/configserver/
+│   │   └── com/gogidix/centralconfiguration/configserver/
 │   │       └── ConfigServerE2ETest.java
 │   └── performance/
 │       └── ConfigServerLoadTest.js
@@ -388,7 +388,7 @@ management:
 logging:
   level:
     org.springframework.cloud.config: DEBUG
-    com.exalt: INFO
+    com.gogidix: INFO
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
 
@@ -444,7 +444,7 @@ spring:
 
 logging:
   level:
-    com.exalt: DEBUG
+    com.gogidix: DEBUG
     org.hibernate.SQL: DEBUG
 
 app:
@@ -848,7 +848,7 @@ spec:
     spec:
       containers:
       - name: config-server
-        image: exalt/config-server:1.0.0
+        image: gogidix/config-server:1.0.0
         ports:
         - containerPort: 8888
         env:
@@ -932,13 +932,13 @@ spec:
 
 For questions, issues, or contributions:
 
-- **Documentation**: [Internal Wiki](https://wiki.exalt.com/config-server)
-- **Issues**: [JIRA Project](https://jira.exalt.com/projects/CONFIG)
-- **Support**: [Slack #central-configuration](https://exalt.slack.com/channels/central-configuration)
-- **Email**: central-configuration@exalt.com
+- **Documentation**: [Internal Wiki](https://wiki.gogidix.com/config-server)
+- **Issues**: [JIRA Project](https://jira.gogidix.com/projects/CONFIG)
+- **Support**: [Slack #central-configuration](https://gogidix.slack.com/channels/central-configuration)
+- **Email**: central-configuration@gogidix.com
 
 ---
 
-**License**: Internal Use - Exalt Application Limited  
+**License**: Internal Use - Gogidix Application Limited  
 **Maintainer**: Platform Infrastructure Team  
 **Last Updated**: June 16, 2025

@@ -130,7 +130,7 @@ sudo yum install ansible
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/exalt-social-ecommerce-ecosystem/central-configuration.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/central-configuration.git
 cd central-configuration/deployment-scripts
 ```
 
@@ -391,4 +391,4 @@ sudo ufw status
 sudo ufw allow 8510/tcp
 ```
 
-If issues persist, contact the platform engineering team at platform-support@exalt-social-ecommerce.com.
+If issues persist, contact the platform engineering team at platform-support@gogidix-social-ecommerce.com.
