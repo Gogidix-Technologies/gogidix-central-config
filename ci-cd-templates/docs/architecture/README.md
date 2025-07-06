@@ -6,7 +6,7 @@ The CI/CD Templates service provides a comprehensive, enterprise-grade approach 
 
 ## Architecture Overview
 
-The CI/CD Templates service is designed as a cloud-native, microservices-based platform that standardizes and orchestrates the entire software delivery lifecycle. The architecture follows the com.exalt naming standards and integrates seamlessly with the broader ecosystem infrastructure.
+The CI/CD Templates service is designed as a cloud-native, microservices-based platform that standardizes and orchestrates the entire software delivery lifecycle. The architecture follows the com.gogidix naming standards and integrates seamlessly with the broader ecosystem infrastructure.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -608,7 +608,7 @@ The platform implements event-driven patterns for decoupled communication:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: com-exalt-central-config
+  name: com-gogidix-central-config
   labels:
     domain: central-configuration
     tier: platform
@@ -618,12 +618,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ci-cd-templates
-  namespace: com-exalt-central-config
+  namespace: com-gogidix-central-config
   labels:
     app.kubernetes.io/name: ci-cd-templates
     app.kubernetes.io/component: central-configuration
-    app.kubernetes.io/part-of: exalt-platform
-    app.kubernetes.io/managed-by: exalt-platform-team
+    app.kubernetes.io/part-of: gogidix-platform
+    app.kubernetes.io/managed-by: gogidix-platform-team
 spec:
   replicas: 3
   strategy:
@@ -653,7 +653,7 @@ spec:
         fsGroup: 10001
       containers:
       - name: ci-cd-templates
-        image: ghcr.io/exalt/ci-cd-templates:1.0.0
+        image: ghcr.io/gogidix/ci-cd-templates:1.0.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8180
@@ -746,7 +746,7 @@ spec:
 
 ```sql
 -- PostgreSQL Enterprise Configuration
--- Database: com_exalt_cicd_templates
+-- Database: com_gogidix_cicd_templates
 
 -- Tables for CI/CD Templates Management
 CREATE SCHEMA IF NOT EXISTS cicd_templates;
@@ -998,7 +998,7 @@ jobs:
     - name: Container Security Scan
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: 'ghcr.io/exalt/ci-cd-templates:${{ github.sha }}'
+        image-ref: 'ghcr.io/gogidix/ci-cd-templates:${{ github.sha }}'
         format: 'sarif'
         output: 'trivy-results.sarif'
     
@@ -1239,7 +1239,7 @@ jobs:
     needs: test
     uses: ./.github/workflows/templates/quality/sonarqube-analysis.yml
     with:
-      sonar-project-key: 'exalt-social-ecommerce:${SERVICE_NAME}'
+      sonar-project-key: 'gogidix-social-ecommerce:${SERVICE_NAME}'
       quality-gate: 'strict'
   
   security:

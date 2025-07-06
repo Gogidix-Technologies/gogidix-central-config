@@ -7,7 +7,7 @@
 
 ## 📋 Overview
 
-The Disaster Recovery Service is a comprehensive business continuity and disaster recovery management platform for the Exalt E-commerce Ecosystem. It provides automated backup and restore capabilities, failover mechanisms, disaster response orchestration, and recovery validation across all critical systems and data.
+The Disaster Recovery Service is a comprehensive business continuity and disaster recovery management platform for the Gogidix E-commerce Ecosystem. It provides automated backup and restore capabilities, failover mechanisms, disaster response orchestration, and recovery validation across all critical systems and data.
 
 ## 🎯 Purpose
 
@@ -131,7 +131,7 @@ graph TB
 disaster-recovery/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/exalt/centralconfiguration/disasterrecovery/
+│   │   ├── java/com/gogidix/centralconfiguration/disasterrecovery/
 │   │   │   ├── DisasterRecoveryApplication.java          # Main application class
 │   │   │   ├── config/
 │   │   │   │   ├── BackupConfig.java                    # Backup configuration
@@ -185,7 +185,7 @@ disaster-recovery/
 │   │           ├── network-recovery.yml                 # Network recovery plan
 │   │           └── full-system-recovery.yml             # Full system recovery
 │   └── test/
-│       └── java/com/exalt/centralconfiguration/disasterrecovery/
+│       └── java/com/gogidix/centralconfiguration/disasterrecovery/
 │           ├── DisasterRecoveryApplicationTest.java
 │           ├── service/
 │           │   ├── BackupServiceTest.java
@@ -195,16 +195,16 @@ disaster-recovery/
 │               └── DisasterRecoveryIntegrationTest.java
 ├── tests/
 │   ├── unit/
-│   │   └── com/exalt/centralconfiguration/disasterrecovery/
+│   │   └── com/gogidix/centralconfiguration/disasterrecovery/
 │   │       ├── service/
 │   │       │   └── BackupServiceTest.java
 │   │       └── controller/
 │   │           └── BackupControllerTest.java
 │   ├── integration/
-│   │   └── com/exalt/centralconfiguration/disasterrecovery/
+│   │   └── com/gogidix/centralconfiguration/disasterrecovery/
 │   │       └── DisasterRecoveryIntegrationTest.java
 │   ├── e2e/
-│   │   └── com/exalt/centralconfiguration/disasterrecovery/
+│   │   └── com/gogidix/centralconfiguration/disasterrecovery/
 │   │       └── DisasterRecoveryE2ETest.java
 │   └── performance/
 │       └── DisasterRecoveryPerformanceTest.js
@@ -320,10 +320,10 @@ recovery-plans/
 # Required environment variables
 export DISASTER_RECOVERY_PORT=8891
 export BACKUP_STORAGE_TYPE=S3
-export AWS_S3_BUCKET=exalt-disaster-recovery-backups
+export AWS_S3_BUCKET=gogidix-disaster-recovery-backups
 export AWS_ACCESS_KEY_ID=your-aws-access-key
 export AWS_SECRET_ACCESS_KEY=your-aws-secret-key
-export AZURE_STORAGE_ACCOUNT=exaltbackups
+export AZURE_STORAGE_ACCOUNT=gogidixbackups
 export AZURE_STORAGE_KEY=your-azure-storage-key
 
 # Database backup settings
@@ -1012,7 +1012,7 @@ echo -e "${BLUE}Step 3: Synchronizing data to target site...${NC}"
 
 # Step 4: Start services on target site
 echo -e "${BLUE}Step 4: Starting services on target site...${NC}"
-ssh "$TARGET_SITE" "docker-compose -f /opt/exalt/docker-compose.prod.yml up -d"
+ssh "$TARGET_SITE" "docker-compose -f /opt/gogidix/docker-compose.prod.yml up -d"
 
 # Wait for services to be ready
 echo -e "${BLUE}Waiting for services to be ready...${NC}"
@@ -1061,7 +1061,7 @@ CRITICAL_ENDPOINTS=(
 for endpoint in "${CRITICAL_ENDPOINTS[@]}"; do
     echo -e "  Testing $endpoint..."
     
-    if curl -sf "https://api.exalt.com$endpoint" > /dev/null; then
+    if curl -sf "https://api.gogidix.com$endpoint" > /dev/null; then
         echo -e "${GREEN}  $endpoint is accessible${NC}"
     else
         echo -e "${RED}  $endpoint is not accessible${NC}"
@@ -1334,13 +1334,13 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 For questions, issues, or contributions:
 
-- **Documentation**: [Internal Wiki](https://wiki.exalt.com/disaster-recovery)
-- **Issues**: [JIRA Project](https://jira.exalt.com/projects/DR)
-- **Support**: [Slack #disaster-recovery](https://exalt.slack.com/channels/disaster-recovery)
-- **Email**: disaster-recovery@exalt.com
+- **Documentation**: [Internal Wiki](https://wiki.gogidix.com/disaster-recovery)
+- **Issues**: [JIRA Project](https://jira.gogidix.com/projects/DR)
+- **Support**: [Slack #disaster-recovery](https://gogidix.slack.com/channels/disaster-recovery)
+- **Email**: disaster-recovery@gogidix.com
 
 ---
 
-**License**: Internal Use - Exalt Application Limited  
+**License**: Internal Use - Gogidix Application Limited  
 **Maintainer**: Platform Infrastructure Team  
 **Last Updated**: June 16, 2025

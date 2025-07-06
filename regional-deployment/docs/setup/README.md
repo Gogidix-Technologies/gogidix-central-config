@@ -55,7 +55,7 @@ Git 2.30+
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/exalt-social-ecommerce-ecosystem/central-configuration.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/central-configuration.git
 cd central-configuration/regional-deployment
 ```
 

@@ -56,7 +56,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn verify sonar:sonar -Dsonar.projectKey=exalt_deployment-scripts
+      run: mvn verify sonar:sonar -Dsonar.projectKey=gogidix_deployment-scripts
       working-directory: central-configuration/deployment-scripts
       
     - name: Check code coverage

@@ -23,7 +23,7 @@
 
 ## Service Overview
 
-The Deployment Scripts Service is the central automation hub for the Exalt Social E-commerce Ecosystem, providing enterprise-grade deployment orchestration, script management, and environment provisioning across multiple platforms and environments.
+The Deployment Scripts Service is the central automation hub for the Gogidix Social E-commerce Ecosystem, providing enterprise-grade deployment orchestration, script management, and environment provisioning across multiple platforms and environments.
 
 ### Business Context
 

@@ -55,7 +55,7 @@ This guide provides instructions for setting up and configuring the Database Mig
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/exalt-social-ecommerce-ecosystem/central-configuration/database-migrations.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/central-configuration/database-migrations.git
 cd database-migrations
 ```
 
@@ -139,13 +139,13 @@ The Migration Service API will be available at http://localhost:8080.
 ### 1. Build Docker Image
 
 ```bash
-docker build -t exalt-ecommerce/database-migrations:latest .
+docker build -t gogidix-ecommerce/database-migrations:latest .
 ```
 
 ### 2. Run Docker Container
 
 ```bash
-docker run -p 8080:8080 --env-file .env exalt-ecommerce/database-migrations:latest
+docker run -p 8080:8080 --env-file .env gogidix-ecommerce/database-migrations:latest
 ```
 
 ### 3. Docker Compose Deployment
@@ -221,7 +221,7 @@ migration:
   
 logging:
   level:
-    com.exalt.ecommerce.migrations: DEBUG
+    com.gogidix.ecommerce.migrations: DEBUG
 ```
 
 ### 2. Testing Environment
@@ -248,7 +248,7 @@ migration:
   
 logging:
   level:
-    com.exalt.ecommerce.migrations: INFO
+    com.gogidix.ecommerce.migrations: INFO
 ```
 
 ### 3. Staging Environment
@@ -275,7 +275,7 @@ migration:
   
 logging:
   level:
-    com.exalt.ecommerce.migrations: INFO
+    com.gogidix.ecommerce.migrations: INFO
 ```
 
 ### 4. Production Environment
@@ -304,7 +304,7 @@ migration:
   
 logging:
   level:
-    com.exalt.ecommerce.migrations: WARN
+    com.gogidix.ecommerce.migrations: WARN
 ```
 
 ## Technology-Specific Setup
@@ -871,7 +871,7 @@ For Spring Boot applications, add the migration client dependency:
 
 ```xml
 <dependency>
-  <groupId>com.exalt.ecommerce</groupId>
+  <groupId>com.gogidix.ecommerce</groupId>
   <artifactId>database-migrations-client</artifactId>
   <version>1.0.0</version>
 </dependency>
@@ -897,13 +897,13 @@ database-migrations:
 For Node.js applications, install the client library:
 
 ```bash
-npm install @exalt/database-migrations-client
+npm install @gogidix/database-migrations-client
 ```
 
 Configure the client in your application:
 
 ```javascript
-const { MigrationClient } = require('@exalt/database-migrations-client');
+const { MigrationClient } = require('@gogidix/database-migrations-client');
 
 const migrationClient = new MigrationClient({
   domain: 'social-commerce',
@@ -935,8 +935,8 @@ security:
   authentication:
     type: oauth2
     oauth2:
-      issuer-uri: https://auth.exalt-ecommerce.com/oauth2/default
-      jwk-set-uri: https://auth.exalt-ecommerce.com/oauth2/default/v1/keys
+      issuer-uri: https://auth.gogidix-ecommerce.com/oauth2/default
+      jwk-set-uri: https://auth.gogidix-ecommerce.com/oauth2/default/v1/keys
     
   authorization:
     roles:
@@ -1020,7 +1020,7 @@ Configure logging in `application.yml`:
 logging:
   level:
     root: INFO
-    com.exalt.ecommerce.migrations: INFO
+    com.gogidix.ecommerce.migrations: INFO
   file:
     name: ${LOG_FILE_PATH:logs/migrations.log}
   pattern:
@@ -1199,7 +1199,7 @@ mongo --host ${MONGODB_HOST} --port ${MONGODB_PORT} --username ${MONGODB_USER} -
 
 ```bash
 # Run with debug logging
-java -Dlogging.level.com.exalt.ecommerce.migrations=DEBUG -jar database-migrations.jar
+java -Dlogging.level.com.gogidix.ecommerce.migrations=DEBUG -jar database-migrations.jar
 ```
 
 #### Security Configuration Issues
@@ -1320,7 +1320,7 @@ management:
         enabled: true
       cloudwatch:
         enabled: true
-        namespace: ExaltEcommerce/DatabaseMigrations
+        namespace: GogidixEcommerce/DatabaseMigrations
       datadog:
         enabled: true
         api-key: ${DATADOG_API_KEY}
@@ -1336,8 +1336,8 @@ security:
   oauth2:
     resource-server:
       jwt:
-        issuer-uri: https://auth.exalt-ecommerce.com/realms/main
-        jwk-set-uri: https://auth.exalt-ecommerce.com/realms/main/protocol/openid-connect/certs
+        issuer-uri: https://auth.gogidix-ecommerce.com/realms/main
+        jwk-set-uri: https://auth.gogidix-ecommerce.com/realms/main/protocol/openid-connect/certs
         
   # Rate Limiting
   rate-limiting:
@@ -1349,8 +1349,8 @@ security:
   # CORS Configuration
   cors:
     allowed-origins:
-      - https://dashboard.exalt-ecommerce.com
-      - https://admin.exalt-ecommerce.com
+      - https://dashboard.gogidix-ecommerce.com
+      - https://admin.gogidix-ecommerce.com
     allowed-methods: [GET, POST, PUT, DELETE, OPTIONS]
     allowed-headers: [Authorization, Content-Type, X-Requested-With]
     max-age: 3600
@@ -1416,12 +1416,12 @@ backup:
     yearly: 5
   destinations:
     - type: s3
-      bucket: exalt-ecommerce-db-backups
+      bucket: gogidix-ecommerce-db-backups
       region: eu-west-1
       encryption: AES256
     - type: azure-blob
       container: database-backups
-      storage-account: exaltecommerce
+      storage-account: gogidixecommerce
       
 # Disaster Recovery
 disaster-recovery:

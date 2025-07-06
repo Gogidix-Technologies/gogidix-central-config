@@ -15,7 +15,7 @@ The CI/CD Templates service exposes REST APIs for:
 ## Base URL
 
 ```
-https://cicd-api.exalt-ecommerce.com/v1
+https://cicd-api.gogidix-ecommerce.com/v1
 ```
 
 ## Authentication
@@ -52,7 +52,7 @@ Retrieves a list of all available CI/CD templates.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/templates?category=build&technology=java" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/templates?category=build&technology=java" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -104,7 +104,7 @@ Retrieves detailed information about a specific template.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/templates/java-maven-build" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/templates/java-maven-build" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -184,7 +184,7 @@ Retrieves the actual YAML content of a template.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/templates/java-maven-build/content" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/templates/java-maven-build/content" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -260,7 +260,7 @@ Creates a new CI/CD template.
 **Example Request**:
 ```bash
 curl -X POST \
-  "https://cicd-api.exalt-ecommerce.com/v1/templates" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/templates" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -306,7 +306,7 @@ Updates an existing CI/CD template.
 **Example Request**:
 ```bash
 curl -X PUT \
-  "https://cicd-api.exalt-ecommerce.com/v1/templates/custom-java-build" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/templates/custom-java-build" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -347,7 +347,7 @@ Deletes a CI/CD template.
 **Example Request**:
 ```bash
 curl -X DELETE \
-  "https://cicd-api.exalt-ecommerce.com/v1/templates/custom-java-build" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/templates/custom-java-build" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -377,7 +377,7 @@ Generates a complete workflow from template compositions.
 **Example Request**:
 ```bash
 curl -X POST \
-  "https://cicd-api.exalt-ecommerce.com/v1/workflows/generate" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/workflows/generate" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -443,7 +443,7 @@ Validates a workflow file against standards and best practices.
 **Example Request**:
 ```bash
 curl -X POST \
-  "https://cicd-api.exalt-ecommerce.com/v1/workflows/validate" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/workflows/validate" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -490,7 +490,7 @@ Customizes a template for a specific service within allowed boundaries.
 **Example Request**:
 ```bash
 curl -X POST \
-  "https://cicd-api.exalt-ecommerce.com/v1/templates/java-maven-build/customize" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/templates/java-maven-build/customize" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -551,7 +551,7 @@ Retrieves usage analytics for templates.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/analytics/templates/usage?template_id=java-maven-build&group_by=domain" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/analytics/templates/usage?template_id=java-maven-build&group_by=domain" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -616,7 +616,7 @@ Retrieves performance analytics for CI/CD pipelines.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/analytics/pipelines/performance?domain=social-commerce&environment=production" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/analytics/pipelines/performance?domain=social-commerce&environment=production" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -681,7 +681,7 @@ Retrieves analytics for deployments.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/analytics/deployments?environment=production" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/analytics/deployments?environment=production" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -752,16 +752,16 @@ Registers a service for CI/CD template integration.
 **Example Request**:
 ```bash
 curl -X POST \
-  "https://cicd-api.exalt-ecommerce.com/v1/services" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/services" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "inventory-service",
-    "repository": "exalt-social-ecommerce-ecosystem/inventory-service",
+    "repository": "gogidix-social-ecommerce-ecosystem/inventory-service",
     "type": "java",
     "domain": "warehousing",
     "description": "Service for managing inventory",
-    "contacts": ["warehousing-team@exalt-ecommerce.com"],
+    "contacts": ["warehousing-team@gogidix-ecommerce.com"],
     "environments": ["development", "testing", "staging", "production"]
   }'
 ```
@@ -770,11 +770,11 @@ curl -X POST \
 ```json
 {
   "id": "inventory-service",
-  "repository": "exalt-social-ecommerce-ecosystem/inventory-service",
+  "repository": "gogidix-social-ecommerce-ecosystem/inventory-service",
   "type": "java",
   "domain": "warehousing",
   "description": "Service for managing inventory",
-  "contacts": ["warehousing-team@exalt-ecommerce.com"],
+  "contacts": ["warehousing-team@gogidix-ecommerce.com"],
   "environments": ["development", "testing", "staging", "production"],
   "registered_at": "2023-06-20T16:45:00Z",
   "status": "registered",
@@ -798,7 +798,7 @@ Retrieves the integration status of a service.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/services/inventory-service/status" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/services/inventory-service/status" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -806,7 +806,7 @@ curl -X GET \
 ```json
 {
   "id": "inventory-service",
-  "repository": "exalt-social-ecommerce-ecosystem/inventory-service",
+  "repository": "gogidix-social-ecommerce-ecosystem/inventory-service",
   "integration_status": "active",
   "templates_used": [
     "java-maven-build",
@@ -861,7 +861,7 @@ Updates the integration configuration for a service.
 **Example Request**:
 ```bash
 curl -X PUT \
-  "https://cicd-api.exalt-ecommerce.com/v1/services/inventory-service/integration" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/services/inventory-service/integration" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -902,7 +902,7 @@ curl -X PUT \
 ```json
 {
   "id": "inventory-service",
-  "repository": "exalt-social-ecommerce-ecosystem/inventory-service",
+  "repository": "gogidix-social-ecommerce-ecosystem/inventory-service",
   "integration_status": "updated",
   "templates_configured": [
     "java-maven-build",
@@ -944,7 +944,7 @@ Retrieves the status of a pipeline for a service.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/pipelines/inventory-service/status?environment=production&limit=5" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/pipelines/inventory-service/status?environment=production&limit=5" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -1041,7 +1041,7 @@ Triggers a pipeline run for a service.
 **Example Request**:
 ```bash
 curl -X POST \
-  "https://cicd-api.exalt-ecommerce.com/v1/pipelines/inventory-service/trigger" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/pipelines/inventory-service/trigger" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1070,7 +1070,7 @@ curl -X POST \
     "skip_tests": false,
     "debug_mode": true
   },
-  "monitoring_url": "https://github.com/exalt-social-ecommerce-ecosystem/inventory-service/actions/runs/12345679"
+  "monitoring_url": "https://github.com/gogidix-social-ecommerce-ecosystem/inventory-service/actions/runs/12345679"
 }
 ```
 
@@ -1092,7 +1092,7 @@ Approves a pending deployment.
 **Example Request**:
 ```bash
 curl -X POST \
-  "https://cicd-api.exalt-ecommerce.com/v1/pipelines/inventory-service/approve" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/pipelines/inventory-service/approve" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1135,7 +1135,7 @@ Initiates a rollback of a deployment.
 **Example Request**:
 ```bash
 curl -X POST \
-  "https://cicd-api.exalt-ecommerce.com/v1/pipelines/inventory-service/rollback" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/pipelines/inventory-service/rollback" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -1159,7 +1159,7 @@ curl -X POST \
   "initiated_at": "2023-06-20T19:00:00Z",
   "initiated_by": "John Doe",
   "estimated_completion": "2023-06-20T19:15:00Z",
-  "monitoring_url": "https://github.com/exalt-social-ecommerce-ecosystem/inventory-service/actions/runs/12345680"
+  "monitoring_url": "https://github.com/gogidix-social-ecommerce-ecosystem/inventory-service/actions/runs/12345680"
 }
 ```
 
@@ -1178,7 +1178,7 @@ Retrieves the health status of the CI/CD template system.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/health" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/health" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -1236,7 +1236,7 @@ Retrieves the status of GitHub Actions runners.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/runners/status?group=production-runners" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/runners/status?group=production-runners" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -1288,7 +1288,7 @@ Retrieves information about currently running pipelines.
 **Example Request**:
 ```bash
 curl -X GET \
-  "https://cicd-api.exalt-ecommerce.com/v1/pipelines/active" \
+  "https://cicd-api.gogidix-ecommerce.com/v1/pipelines/active" \
   -H "Authorization: Bearer {token}"
 ```
 
@@ -1399,8 +1399,8 @@ The API uses URL versioning to ensure backward compatibility:
 To use a specific version, include it in the URL path:
 
 ```
-https://cicd-api.exalt-ecommerce.com/v1/templates
-https://cicd-api.exalt-ecommerce.com/v2-beta/templates
+https://cicd-api.gogidix-ecommerce.com/v1/templates
+https://cicd-api.gogidix-ecommerce.com/v2-beta/templates
 ```
 
 ## Integration Examples
@@ -1416,7 +1416,7 @@ To integrate templates into a service repository:
 
 2. **Copy Templates**:
    ```bash
-   curl -X GET "https://cicd-api.exalt-ecommerce.com/v1/templates/download?category=build,test,deploy" \
+   curl -X GET "https://cicd-api.gogidix-ecommerce.com/v1/templates/download?category=build,test,deploy" \
      -H "Authorization: Bearer {token}" \
      -o templates.zip
    
@@ -1426,7 +1426,7 @@ To integrate templates into a service repository:
 3. **Generate Workflow File**:
    ```bash
    curl -X POST \
-     "https://cicd-api.exalt-ecommerce.com/v1/workflows/generate" \
+     "https://cicd-api.gogidix-ecommerce.com/v1/workflows/generate" \
      -H "Authorization: Bearer {token}" \
      -H "Content-Type: application/json" \
      -d '{
@@ -1462,7 +1462,7 @@ echo "Monitoring pipeline $PIPELINE_ID for service $SERVICE_ID..."
 
 while true; do
   STATUS=$(curl -s -X GET \
-    "https://cicd-api.exalt-ecommerce.com/v1/pipelines/$SERVICE_ID/status?pipeline_id=$PIPELINE_ID" \
+    "https://cicd-api.gogidix-ecommerce.com/v1/pipelines/$SERVICE_ID/status?pipeline_id=$PIPELINE_ID" \
     -H "Authorization: Bearer $TOKEN" | jq -r '.status')
   
   echo "Current status: $STATUS"
@@ -1484,7 +1484,7 @@ Using the API to update templates across multiple services:
 // update-templates.js
 const axios = require('axios');
 
-const apiBaseUrl = 'https://cicd-api.exalt-ecommerce.com/v1';
+const apiBaseUrl = 'https://cicd-api.gogidix-ecommerce.com/v1';
 const token = process.env.API_TOKEN;
 
 async function updateTemplates() {
@@ -1724,8 +1724,8 @@ updateTemplates();
 
 ### Related Documentation
 
-- [CI/CD Templates User Guide](https://cicd-docs.exalt-ecommerce.com/templates/user-guide)
+- [CI/CD Templates User Guide](https://cicd-docs.gogidix-ecommerce.com/templates/user-guide)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Template Development Guide](https://cicd-docs.exalt-ecommerce.com/templates/development)
-- [Service Integration Guide](https://cicd-docs.exalt-ecommerce.com/services/integration)
-- [API Client Libraries](https://cicd-docs.exalt-ecommerce.com/api/client-libraries)
+- [Template Development Guide](https://cicd-docs.gogidix-ecommerce.com/templates/development)
+- [Service Integration Guide](https://cicd-docs.gogidix-ecommerce.com/services/integration)
+- [API Client Libraries](https://cicd-docs.gogidix-ecommerce.com/api/client-libraries)

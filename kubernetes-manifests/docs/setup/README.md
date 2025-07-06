@@ -117,7 +117,7 @@ sudo apt-get install helm
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/exalt-social-ecommerce-ecosystem/central-configuration.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/central-configuration.git
 cd central-configuration/kubernetes-manifests
 ```
 
@@ -160,7 +160,7 @@ minikube start
 kubectl config use-context minikube
 
 # For cloud environment (example with AWS)
-aws eks update-kubeconfig --name exalt-k8s-cluster --region eu-west-1
+aws eks update-kubeconfig --name gogidix-k8s-cluster --region eu-west-1
 ```
 
 ## Manifest Structure
@@ -210,7 +210,7 @@ kind: Kustomization
 bases:
   - ../../base
 
-namespace: exalt-production
+namespace: gogidix-production
 
 patchesStrategicMerge:
   - replica-count.yaml
@@ -238,7 +238,7 @@ kind: Kustomization
 bases:
   - ../../base
 
-namespace: exalt-dev
+namespace: gogidix-dev
 
 resources:
   - namespace.yaml
@@ -261,7 +261,7 @@ kind: Kustomization
 bases:
   - ../../base
 
-namespace: exalt-production
+namespace: gogidix-production
 
 resources:
   - namespace.yaml
@@ -300,11 +300,11 @@ kubesec scan k8s/deployment.yaml
 kubectl apply -k overlays/development/
 
 # Verify deployment
-kubectl get pods -n exalt-dev
-kubectl get services -n exalt-dev
+kubectl get pods -n gogidix-dev
+kubectl get services -n gogidix-dev
 
 # Port forward to test locally
-kubectl port-forward svc/example-service 8080:8080 -n exalt-dev
+kubectl port-forward svc/example-service 8080:8080 -n gogidix-dev
 ```
 
 ## Troubleshooting
@@ -331,7 +331,7 @@ Issue: Pods are evicted due to resource limits
 Solution:
 ```bash
 # Check current resource usage
-kubectl top pods -n exalt-dev
+kubectl top pods -n gogidix-dev
 
 # Adjust resource limits in manifest
 nano overlays/development/resource-limits.yaml
@@ -347,13 +347,13 @@ Issue: Pods stuck in `ImagePullBackOff` or `CrashLoopBackOff` state
 Solution:
 ```bash
 # Check pod status
-kubectl describe pod <pod-name> -n exalt-dev
+kubectl describe pod <pod-name> -n gogidix-dev
 
 # View logs
-kubectl logs <pod-name> -n exalt-dev
+kubectl logs <pod-name> -n gogidix-dev
 
 # If image pull issue, verify image name and registry access
-kubectl get secret <registry-secret> -n exalt-dev -o yaml
+kubectl get secret <registry-secret> -n gogidix-dev -o yaml
 ```
 
-If issues persist, contact the platform engineering team at platform-support@exalt-social-ecommerce.com.
+If issues persist, contact the platform engineering team at platform-support@gogidix-social-ecommerce.com.

@@ -7,7 +7,7 @@
 
 ## 📋 Overview
 
-The Environment Config Service is a comprehensive environment-specific configuration management platform for the Exalt E-commerce Ecosystem. It provides centralized management of environment configurations, dynamic environment provisioning, configuration validation, and environment-specific feature toggles across development, staging, and production environments.
+The Environment Config Service is a comprehensive environment-specific configuration management platform for the Gogidix E-commerce Ecosystem. It provides centralized management of environment configurations, dynamic environment provisioning, configuration validation, and environment-specific feature toggles across development, staging, and production environments.
 
 ## 🎯 Purpose
 
@@ -133,7 +133,7 @@ graph TB
 environment-config/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/exalt/centralconfiguration/environmentconfig/
+│   │   ├── java/com/gogidix/centralconfiguration/environmentconfig/
 │   │   │   ├── EnvironmentConfigApplication.java        # Main application class
 │   │   │   ├── config/
 │   │   │   │   ├── EnvironmentConfig.java               # Environment configuration
@@ -187,7 +187,7 @@ environment-config/
 │   │           ├── prod/                                # Production configs
 │   │           └── templates/                           # Configuration templates
 │   └── test/
-│       └── java/com/exalt/centralconfiguration/environmentconfig/
+│       └── java/com/gogidix/centralconfiguration/environmentconfig/
 │           ├── EnvironmentConfigApplicationTest.java
 │           ├── service/
 │           │   ├── EnvironmentServiceTest.java
@@ -197,16 +197,16 @@ environment-config/
 │               └── EnvironmentConfigIntegrationTest.java
 ├── tests/
 │   ├── unit/
-│   │   └── com/exalt/centralconfiguration/environmentconfig/
+│   │   └── com/gogidix/centralconfiguration/environmentconfig/
 │   │       ├── service/
 │   │       │   └── EnvironmentServiceTest.java
 │   │       └── controller/
 │   │           └── EnvironmentControllerTest.java
 │   ├── integration/
-│   │   └── com/exalt/centralconfiguration/environmentconfig/
+│   │   └── com/gogidix/centralconfiguration/environmentconfig/
 │   │       └── EnvironmentConfigIntegrationTest.java
 │   ├── e2e/
-│   │   └── com/exalt/centralconfiguration/environmentconfig/
+│   │   └── com/gogidix/centralconfiguration/environmentconfig/
 │   │       └── EnvironmentConfigE2ETest.java
 │   └── performance/
 │       └── EnvironmentConfigPerformanceTest.js
@@ -364,11 +364,11 @@ export CONFIG_GIT_PASSWORD=your-token
 export SECRET_PROVIDER=VAULT
 export VAULT_URL=https://vault.company.com
 export VAULT_TOKEN=your-vault-token
-export VAULT_NAMESPACE=exalt
+export VAULT_NAMESPACE=gogidix
 
 # Kubernetes integration (optional)
 export KUBERNETES_CONFIG_PATH=/home/user/.kube/config
-export KUBERNETES_NAMESPACE=exalt-configs
+export KUBERNETES_NAMESPACE=gogidix-configs
 
 # Cloud provider settings (optional)
 export AWS_ACCESS_KEY_ID=your-aws-access-key
@@ -972,7 +972,7 @@ management:
 
 logging:
   level:
-    com.exalt: INFO
+    com.gogidix: INFO
     org.springframework.security: WARN
     org.hibernate.SQL: WARN
   pattern:
@@ -991,7 +991,7 @@ app:
       refresh-expiration: 86400000
   
   cors:
-    allowed-origins: ${CORS_ORIGINS:https://app.exalt.com,https://admin.exalt.com}
+    allowed-origins: ${CORS_ORIGINS:https://app.gogidix.com,https://admin.gogidix.com}
     allowed-methods: GET,POST,PUT,DELETE,OPTIONS
     allowed-headers: "*"
     allow-credentials: true
@@ -1438,13 +1438,13 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 For questions, issues, or contributions:
 
-- **Documentation**: [Internal Wiki](https://wiki.exalt.com/environment-config)
-- **Issues**: [JIRA Project](https://jira.exalt.com/projects/ENV)
-- **Support**: [Slack #environment-config](https://exalt.slack.com/channels/environment-config)
-- **Email**: environment-config@exalt.com
+- **Documentation**: [Internal Wiki](https://wiki.gogidix.com/environment-config)
+- **Issues**: [JIRA Project](https://jira.gogidix.com/projects/ENV)
+- **Support**: [Slack #environment-config](https://gogidix.slack.com/channels/environment-config)
+- **Email**: environment-config@gogidix.com
 
 ---
 
-**License**: Internal Use - Exalt Application Limited  
+**License**: Internal Use - Gogidix Application Limited  
 **Maintainer**: Platform Infrastructure Team  
 **Last Updated**: June 16, 2025

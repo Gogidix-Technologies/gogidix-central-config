@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     
-    <groupId>com.exalt.centralconfiguration</groupId>
+    <groupId>com.gogidix.centralconfiguration</groupId>
     <artifactId>infrastructure-as-code</artifactId>
     <version>1.0.0</version>
     <description>Infrastructure as Code Service for Central Configuration Domain</description>

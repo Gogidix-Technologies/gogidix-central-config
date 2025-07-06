@@ -35,10 +35,10 @@ kubectl scale deployment disaster-recovery --replicas=0 -n central-configuration
 
 ```bash
 # Check service health
-curl https://dr-service.exalt-social-ecommerce.com/actuator/health
+curl https://dr-service.gogidix-social-ecommerce.com/actuator/health
 
 # View service metrics
-curl https://dr-service.exalt-social-ecommerce.com/actuator/metrics
+curl https://dr-service.gogidix-social-ecommerce.com/actuator/metrics
 ```
 
 ## Monitoring and Alerting
@@ -67,19 +67,19 @@ curl https://dr-service.exalt-social-ecommerce.com/actuator/metrics
 
 ```bash
 # Trigger manual backup
-curl -X POST https://dr-service.exalt-social-ecommerce.com/api/v1/backups \
+curl -X POST https://dr-service.gogidix-social-ecommerce.com/api/v1/backups \
   -H "Content-Type: application/json" \
   -d '{"type": "FULL", "description": "Manual backup"}'
 
 # List backups
-curl https://dr-service.exalt-social-ecommerce.com/api/v1/backups/list
+curl https://dr-service.gogidix-social-ecommerce.com/api/v1/backups/list
 ```
 
 ### Backup Verification
 
 ```bash
 # Verify backup integrity
-curl -X POST https://dr-service.exalt-social-ecommerce.com/api/v1/backups/verify/{backupId}
+curl -X POST https://dr-service.gogidix-social-ecommerce.com/api/v1/backups/verify/{backupId}
 ```
 
 ## Restore Operations
@@ -88,24 +88,24 @@ curl -X POST https://dr-service.exalt-social-ecommerce.com/api/v1/backups/verify
 
 1. Identify the backup to restore
    ```bash
-   curl https://dr-service.exalt-social-ecommerce.com/api/v1/backups/list
+   curl https://dr-service.gogidix-social-ecommerce.com/api/v1/backups/list
    ```
 
 2. Validate backup integrity
    ```bash
-   curl -X POST https://dr-service.exalt-social-ecommerce.com/api/v1/backups/verify/{backupId}
+   curl -X POST https://dr-service.gogidix-social-ecommerce.com/api/v1/backups/verify/{backupId}
    ```
 
 3. Initiate restore process
    ```bash
-   curl -X POST https://dr-service.exalt-social-ecommerce.com/api/v1/restore \
+   curl -X POST https://dr-service.gogidix-social-ecommerce.com/api/v1/restore \
      -H "Content-Type: application/json" \
      -d '{"backupId": "backup-2025-06-24", "services": ["all"], "priority": "high"}'
    ```
 
 4. Monitor restore progress
    ```bash
-   curl https://dr-service.exalt-social-ecommerce.com/api/v1/restore/status/{restoreId}
+   curl https://dr-service.gogidix-social-ecommerce.com/api/v1/restore/status/{restoreId}
    ```
 
 ## Failover Management
@@ -114,10 +114,10 @@ curl -X POST https://dr-service.exalt-social-ecommerce.com/api/v1/backups/verify
 
 ```bash
 # Check failover readiness
-curl https://dr-service.exalt-social-ecommerce.com/api/v1/failover/readiness
+curl https://dr-service.gogidix-social-ecommerce.com/api/v1/failover/readiness
 
 # Initiate regional failover
-curl -X POST https://dr-service.exalt-social-ecommerce.com/api/v1/failover/execute \
+curl -X POST https://dr-service.gogidix-social-ecommerce.com/api/v1/failover/execute \
   -H "Content-Type: application/json" \
   -d '{"targetRegion": "eu-west-2", "services": ["critical"]}'
 ```
@@ -135,19 +135,19 @@ curl -X POST https://dr-service.exalt-social-ecommerce.com/api/v1/failover/execu
 
 2. Verify storage connectivity
    ```bash
-   curl https://dr-service.exalt-social-ecommerce.com/api/v1/storage/check
+   curl https://dr-service.gogidix-social-ecommerce.com/api/v1/storage/check
    ```
 
 3. Check backup error details
    ```bash
-   curl https://dr-service.exalt-social-ecommerce.com/api/v1/backups/{backupId}/errors
+   curl https://dr-service.gogidix-social-ecommerce.com/api/v1/backups/{backupId}/errors
    ```
 
 #### Restore Failures
 
 1. Verify backup consistency
    ```bash
-   curl -X POST https://dr-service.exalt-social-ecommerce.com/api/v1/backups/verify/{backupId}
+   curl -X POST https://dr-service.gogidix-social-ecommerce.com/api/v1/backups/verify/{backupId}
    ```
 
 2. Check resource availability

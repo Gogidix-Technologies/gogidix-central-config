@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     
-    <groupId>com.exalt.centralconfiguration</groupId>
+    <groupId>com.gogidix.centralconfiguration</groupId>
     <artifactId>regional-deployment</artifactId>
     <version>1.0.0</version>
     <description>Regional Deployment Service for Central Configuration Domain</description>

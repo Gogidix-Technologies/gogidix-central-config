@@ -37,7 +37,7 @@ This comprehensive guide provides step-by-step instructions for setting up and d
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/exalt-social-ecommerce-ecosystem/central-configuration/config-server.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/central-configuration/config-server.git
 cd config-server
 ```
 
@@ -53,7 +53,7 @@ Edit the `.env` file to set required variables:
 
 ```properties
 # Git Repository Configuration
-SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/exalt-social-ecommerce-ecosystem/configuration-repository.git
+SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repository.git
 SPRING_CLOUD_CONFIG_SERVER_GIT_USERNAME=${GIT_USERNAME}
 SPRING_CLOUD_CONFIG_SERVER_GIT_PASSWORD=${GIT_PASSWORD}
 
@@ -62,8 +62,8 @@ SERVER_PORT=8888
 SPRING_PROFILES_ACTIVE=native,git
 
 # Security Configuration
-SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=https://auth.exalt-ecommerce.com/oauth2/default
-SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=https://auth.exalt-ecommerce.com/oauth2/default/v1/keys
+SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=https://auth.gogidix-ecommerce.com/oauth2/default
+SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=https://auth.gogidix-ecommerce.com/oauth2/default/v1/keys
 
 # Encryption Configuration
 ENCRYPT_KEY=${ENCRYPTION_KEY}
@@ -108,13 +108,13 @@ The Configuration Server will be available at http://localhost:8888.
 ### 1. Build Docker Image
 
 ```bash
-docker build -t exalt-ecommerce/config-server:latest .
+docker build -t gogidix-ecommerce/config-server:latest .
 ```
 
 ### 2. Run Docker Container
 
 ```bash
-docker run -p 8888:8888 --env-file .env exalt-ecommerce/config-server:latest
+docker run -p 8888:8888 --env-file .env gogidix-ecommerce/config-server:latest
 ```
 
 ### 3. Docker Compose Deployment
@@ -231,7 +231,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/exalt-social-ecommerce-ecosystem/configuration-repository.git
+          uri: https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repository.git
           clone-on-start: true
           force-pull: true
           refresh-rate: 30
@@ -242,7 +242,7 @@ spring:
 ### 1. Initialize Configuration Repository
 
 ```bash
-git clone https://github.com/exalt-social-ecommerce-ecosystem/configuration-repository.git
+git clone https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repository.git
 cd configuration-repository
 ```
 
@@ -326,8 +326,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://auth.exalt-ecommerce.com/oauth2/default
-          jwk-set-uri: https://auth.exalt-ecommerce.com/oauth2/default/v1/keys
+          issuer-uri: https://auth.gogidix-ecommerce.com/oauth2/default
+          jwk-set-uri: https://auth.gogidix-ecommerce.com/oauth2/default/v1/keys
 ```
 
 ## Monitoring Setup
@@ -492,7 +492,7 @@ mvn clean package
 For Kubernetes:
 
 ```bash
-kubectl set image deployment/config-server config-server=exalt-ecommerce/config-server:${NEW_VERSION}
+kubectl set image deployment/config-server config-server=gogidix-ecommerce/config-server:${NEW_VERSION}
 ```
 
 For Docker:
@@ -536,7 +536,7 @@ spring:
         encrypt:
           enabled: true
         vault:
-          host: ${VAULT_HOST:vault.exalt-ecommerce.com}
+          host: ${VAULT_HOST:vault.gogidix-ecommerce.com}
           port: ${VAULT_PORT:8200}
           scheme: https
           backend: secret
@@ -579,7 +579,7 @@ management:
 logging:
   level:
     root: INFO
-    com.exalt: DEBUG
+    com.gogidix: DEBUG
     org.springframework.cloud.config: INFO
     org.springframework.security: WARN
   pattern:
@@ -592,8 +592,8 @@ spring.security:
   oauth2:
     resourceserver:
       jwt:
-        issuer-uri: ${JWT_ISSUER_URI:https://auth.exalt-ecommerce.com/oauth2/default}
-        jwk-set-uri: ${JWT_JWK_SET_URI:https://auth.exalt-ecommerce.com/oauth2/default/v1/keys}
+        issuer-uri: ${JWT_ISSUER_URI:https://auth.gogidix-ecommerce.com/oauth2/default}
+        jwk-set-uri: ${JWT_JWK_SET_URI:https://auth.gogidix-ecommerce.com/oauth2/default/v1/keys}
 
 # Encryption Configuration
 encrypt:
@@ -605,7 +605,7 @@ encrypt:
 
 # Message Bus Configuration (RabbitMQ)
 spring.rabbitmq:
-  host: ${RABBITMQ_HOST:rabbitmq.exalt-ecommerce.com}
+  host: ${RABBITMQ_HOST:rabbitmq.gogidix-ecommerce.com}
   port: ${RABBITMQ_PORT:5672}
   username: ${RABBITMQ_USERNAME}
   password: ${RABBITMQ_PASSWORD}
@@ -616,7 +616,7 @@ spring.rabbitmq:
 
 # Database Configuration (PostgreSQL)
 spring.datasource:
-  url: jdbc:postgresql://${DB_HOST:postgres.exalt-ecommerce.com}:${DB_PORT:5432}/${DB_NAME:config_server}
+  url: jdbc:postgresql://${DB_HOST:postgres.gogidix-ecommerce.com}:${DB_PORT:5432}/${DB_NAME:config_server}
   username: ${DB_USERNAME}
   password: ${DB_PASSWORD}
   hikari:
@@ -630,7 +630,7 @@ spring.datasource:
 spring.cache:
   type: redis
   redis:
-    host: ${REDIS_HOST:redis.exalt-ecommerce.com}
+    host: ${REDIS_HOST:redis.gogidix-ecommerce.com}
     port: ${REDIS_PORT:6379}
     password: ${REDIS_PASSWORD}
     ssl:
@@ -654,13 +654,13 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/exalt-social-ecommerce-ecosystem/config-europe.git
+          uri: https://github.com/gogidix-social-ecommerce-ecosystem/config-europe.git
           search-paths: 'europe/{application}/{profile}','europe/{application}','europe/{profile}'
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-europe-1.exalt-ecommerce.com:8761/eureka/,http://eureka-europe-2.exalt-ecommerce.com:8761/eureka/
+      defaultZone: http://eureka-europe-1.gogidix-ecommerce.com:8761/eureka/,http://eureka-europe-2.gogidix-ecommerce.com:8761/eureka/
 
 management:
   metrics:
@@ -676,13 +676,13 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/exalt-social-ecommerce-ecosystem/config-africa.git
+          uri: https://github.com/gogidix-social-ecommerce-ecosystem/config-africa.git
           search-paths: 'africa/{application}/{profile}','africa/{application}','africa/{profile}'
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka-africa-1.exalt-ecommerce.com:8761/eureka/,http://eureka-africa-2.exalt-ecommerce.com:8761/eureka/
+      defaultZone: http://eureka-africa-1.gogidix-ecommerce.com:8761/eureka/,http://eureka-africa-2.gogidix-ecommerce.com:8761/eureka/
 
 management:
   metrics:
@@ -883,7 +883,7 @@ openssl genrsa -out config-server.key 2048
 
 # Generate certificate signing request
 openssl req -new -key config-server.key -out config-server.csr \
-  -subj "/C=US/ST=State/L=City/O=Exalt/OU=IT/CN=config-server.exalt-ecommerce.com"
+  -subj "/C=US/ST=State/L=City/O=Gogidix/OU=IT/CN=config-server.gogidix-ecommerce.com"
 
 # Create PKCS12 keystore for Spring Boot
 openssl pkcs12 -export -in config-server.crt -inkey config-server.key \
@@ -900,8 +900,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://keycloak.exalt-ecommerce.com/auth/realms/exalt
-          jwk-set-uri: https://keycloak.exalt-ecommerce.com/auth/realms/exalt/protocol/openid-connect/certs
+          issuer-uri: https://keycloak.gogidix-ecommerce.com/auth/realms/gogidix
+          jwk-set-uri: https://keycloak.gogidix-ecommerce.com/auth/realms/gogidix/protocol/openid-connect/certs
       client:
         registration:
           config-server:
@@ -910,7 +910,7 @@ spring:
             scope: openid,profile,email
         provider:
           keycloak:
-            issuer-uri: https://keycloak.exalt-ecommerce.com/auth/realms/exalt
+            issuer-uri: https://keycloak.gogidix-ecommerce.com/auth/realms/gogidix
 ```
 
 ## Performance Optimization
@@ -959,7 +959,7 @@ effective_io_concurrency = 200
 1. **Git Authentication Failures**
    ```bash
    # Test Git access
-   git ls-remote https://github.com/exalt-social-ecommerce-ecosystem/configuration-repo.git
+   git ls-remote https://github.com/gogidix-social-ecommerce-ecosystem/configuration-repo.git
    
    # Verify credentials
    echo $CONFIG_GIT_USERNAME
@@ -972,7 +972,7 @@ effective_io_concurrency = 200
    keytool -list -v -keystore config-server.p12 -storepass ${KEYSTORE_PASSWORD}
    
    # Test SSL connection
-   openssl s_client -connect config-server.exalt-ecommerce.com:8888
+   openssl s_client -connect config-server.gogidix-ecommerce.com:8888
    ```
 
 3. **Service Discovery Problems**
